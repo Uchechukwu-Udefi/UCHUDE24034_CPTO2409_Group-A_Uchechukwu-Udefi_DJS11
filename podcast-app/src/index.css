@@ -32,6 +32,7 @@ body {
 
 header {
   height: 110px;
+  background-color: aqua;
   display: flex;
   align-items: center;
   padding-block: 10px;
