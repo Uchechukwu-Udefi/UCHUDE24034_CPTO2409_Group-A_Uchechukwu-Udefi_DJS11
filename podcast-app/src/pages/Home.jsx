@@ -21,6 +21,9 @@ export default function Home() {
     
       return (
         <div className="home-container">
+
+            <h2>Featured podcast for you</h2>
+            
           {previews.map(preview => (
             <div key={preview.id}>
                <img src={preview.image} alt={preview.title} style={{ width: '100px', height: '100px' }} />
@@ -29,7 +32,7 @@ export default function Home() {
             </div>
           ))}
 
-          <Link to="vans">Find your van</Link>
+          <Link to="vans">More</Link>
         </div>
       );
 

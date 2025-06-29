@@ -32,29 +32,28 @@ body {
 
 header {
   height: 110px;
-  background-color: aqua;
+  background-color: #211945;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   padding-block: 10px;
 }
 
 header .site-logo {
-  color: black;
   margin-right: auto;
-  text-transform: uppercase;
-  font-weight: 900;
-  font-size: 25px;
+  height: 2.25em;
+  width: auto;
 }
 
 header a {
   text-decoration: none;
-  color: #4d4d4d;
+  color: #229788;
   font-weight: 600;
   padding: 5px 20px;
 }
 
 header a:hover {
-  color: #161616;
+  color: #2DD4BF;
   text-decoration: underline;
 }
 
