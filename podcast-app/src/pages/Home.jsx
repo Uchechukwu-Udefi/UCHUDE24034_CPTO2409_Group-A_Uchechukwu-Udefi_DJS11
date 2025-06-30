@@ -18,7 +18,7 @@ export default function Home() {
         }
     
         loadHomeData();
-      }, []);;
+      }, []);
     
 
     const randomFour = useMemo(() => {
@@ -43,13 +43,12 @@ export default function Home() {
             alt={preview.title}
             />
             <h3>{preview.title}</h3>
-            <p>{preview.author}</p>
         </div>
         ))}
         </div>
         
 
-        <Link to="">Explore More</Link>
+        <Link to="/podcasts">Explore More</Link>
     </div>
 );
 

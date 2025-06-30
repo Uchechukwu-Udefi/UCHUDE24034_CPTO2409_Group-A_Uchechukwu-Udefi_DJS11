@@ -22,17 +22,18 @@ export default function PodcastList() {
     return(
         <div className="podcast-list">
         
-            <h2>Featured podcast for you</h2>
+            <h2>The best stories and ideas all in one place</h2>
             
-            {previews.map(preview => (
-            <div key={preview.id}>
-                <img src={preview.image} alt={preview.title} style={{ width: '100px', height: '100px' }} />
-                <h2>{preview.title}</h2>
-                <p>{preview.description}</p>
+            <div className="podcast-list-container">
+              {previews.map(preview => (
+              <div key={preview.id} className="podcast-list-item">
+                  <img src={preview.image} alt={preview.title} />
+                  <h2>{preview.title}</h2>
+                  <Link to={`/podcasts/${preview.id}`}>View Details</Link>
+              </div>
+              ))}
             </div>
-            ))}
-        
-            <Link to="">More</Link>
+            
         </div>
     )
 }
