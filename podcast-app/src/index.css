@@ -6,7 +6,7 @@ html,
 body {
   margin: 0;
   padding: 0;
-  background-color: #fff7ed;
+  background: linear-gradient(to bottom, #ffffff, #634DB8);
   font-family: "Inter", sans-serif;
 }
 
@@ -32,7 +32,7 @@ body {
 
 header {
   height: 110px;
-  background-color: #211945;
+  background-color: #161616;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -47,7 +47,7 @@ header .site-logo {
 
 header a {
   text-decoration: none;
-  color: #229788;
+  color: #f87a20;
   font-weight: 600;
   padding: 5px 20px;
 }
@@ -113,4 +113,76 @@ footer {
 
 .link-button:hover {
   transform: translate(1px, 1px);
+}
+
+/*** HOME PAGE ***/
+.home-container {
+  padding: 45px 23px;
+  align-items: center;
+}
+
+.home-intro {
+  background: url("../assets/images/bg-image.jpg") no-repeat center center;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  min-height: 350px;
+  color: white;
+  padding: 45px 23px;
+  margin-bottom: 50px;
+}
+
+.home-container h1 {
+  font-weight: 700;
+  font-size: 2.25rem;
+  line-height: 42px;
+}
+
+.home-container p {
+  line-height: 24px;
+}
+
+.home-container a {
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+  background-color: #f87a20;
+  border: none;
+  width: 100%;
+  margin-top: 27px;
+  padding-block: 0.75rem;
+  color: white;
+  font-weight: 700;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: transform 0.1s ease-in-out;
+}
+
+.home-container a:hover {
+  transform: translate(1px, 1px);
+}
+
+.home-preview-card {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 10px;
+  width: 100%;
+  height: 100%;
+}
+
+.preview-card {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+}
+
+.preview-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
 }
