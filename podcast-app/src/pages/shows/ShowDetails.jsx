@@ -32,6 +32,7 @@ export default function ShowPage() {
       <img src={show.image} alt={show.title} style={{ width: '200px', marginBottom: '1rem' }} />
       <p>{show.description}</p>
 
+
       <h2>Seasons</h2>
       {show.seasons?.map((season, index) => (
         <div key={index} style={{ marginBottom: '20px' }}>

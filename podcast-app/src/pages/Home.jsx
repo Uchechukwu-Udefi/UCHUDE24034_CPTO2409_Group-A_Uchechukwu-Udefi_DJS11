@@ -30,7 +30,7 @@ export default function Home() {
         <div className="home-intro">
             <h1>The #1 Show Platform, Specially Made For You.</h1>
                 <p>Dive into a world of endless adventures with UTune.</p>
-                <p>Whether you're relaxing, learning, or exploring new ideas, we've got the perfect shows for you.</p>
+                <p>Whether you are relaxing, learning, or exploring new ideas, we have got the perfect shows for you.</p>
                 <p>Discover content that resonates your way.</p>  
         </div>
 

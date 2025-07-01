@@ -158,11 +158,12 @@ footer {
   font-weight: 700;
   border-radius: 5px;
   cursor: pointer;
-  transition: transform 0.1s ease-in-out;
+  transition: transform 0.2s ease-in-out;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 
 .home-container a:hover {
-  transform: translate(1px, 1px);
+  transform: translate(2px, 2px);
 }
 
 .home-preview-card {
@@ -209,12 +210,18 @@ footer {
 }
 
 .show-list-container {
-  padding: 45px 23px;
-  align-items: center;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 16px;
-  justify-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+
+}
+
+.show-list h2 {
+  font-weight: 700;
+  font-size: 2.25rem;
+  line-height: 42px;
+  text-align: center;
+  padding: 10px;
 }
 
 .show-list-item {
@@ -225,12 +232,58 @@ footer {
   padding: 16px;
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  width: 100%;
+  width: 200px;
 }
 
 .show-list-item img {
   width: 100%;
-  height: 100%;
+  height: 120px;
   object-fit: cover;
   border-radius: 10px;
+}
+
+/*** SHOW GENRE PAGES ***/
+
+.genre-container {
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.genre-container h1 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 2rem;
+  color: #161616;
+}
+
+.genre-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.genre-list-link {
+  flex: 1 1 200px;
+  max-width: 250px;
+  background-color: #f87a20;
+  padding: 16px 24px;
+  border-radius: 10px;
+  text-align: center;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.genre-list-link:hover {
+  background-color: #2DD4BF;
+  transform: translateY(-3px);
+}
+
+.genre-list-link a {
+  text-decoration: none;
+  color: #161616;
+  font-size: 2rem;
+  font-weight: 600;
 }
