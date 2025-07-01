@@ -137,13 +137,15 @@ footer {
   font-weight: 700;
   font-size: 2.25rem;
   line-height: 42px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 1);
 }
 
 .home-container p {
   line-height: 24px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 2);
 }
 
-.home-container a {
+.explore-more {
   display: inline-block;
   text-align: center;
   text-decoration: none;
@@ -177,8 +179,9 @@ footer {
   align-items: center;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 16px;
+  gap: 20px;
   justify-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .preview-card img {
@@ -188,14 +191,14 @@ footer {
   border-radius: 10px;
 }
 
-/*** PODCASTS PAGES ***/
+/*** SHOW PODCASTS PAGES ***/
 
-.podcast-list {
+.show-list {
   padding: 45px 23px;
   align-items: center;
 }
 
-.podcast-list-container {
+.show-list-container {
   padding: 45px 23px;
   align-items: center;
   display: grid;
@@ -204,7 +207,7 @@ footer {
   justify-items: center;
 }
 
-.podcast-list-item {
+.show-list-item {
  display: flex;
   flex-direction: column;
   align-items: center;
@@ -215,7 +218,7 @@ footer {
   width: 100%;
 }
 
-.podcast-list-item img {
+.show-list-item img {
   width: 100%;
   height: 100%;
   object-fit: cover;

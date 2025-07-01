@@ -1,8 +1,7 @@
-import { Link } from "react-router-dom"
 import { useEffect, useState } from 'react';
 import { fetchPreviews } from '/server';
 
-export default function PodcastList() {
+export default function ShowList() {
 
     const [previews, setPreviews] = useState([]);
     
@@ -20,9 +19,9 @@ export default function PodcastList() {
       }, []);
 
     return(
-        <div className="podcast-list">
+        <div className="show-list">
         
-            <h2>Featured podcast for you</h2>
+            <h2>Featured shows for you</h2>
             
             {previews.map(preview => (
             <div key={preview.id}>
