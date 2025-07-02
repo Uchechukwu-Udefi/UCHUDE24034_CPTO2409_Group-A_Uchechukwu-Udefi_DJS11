@@ -31,9 +31,10 @@ export default function ShowPage() {
       <h1>{show.title}</h1>
       <img src={show.image} alt={show.title} style={{ width: '200px', marginBottom: '1rem' }} />
       <p>{show.description}</p>
+      <p><strong>Genres:</strong> {show.genres.join(', ')}</p>
+      <p><strong>Last Updated:</strong> {new Date(show.updated).toLocaleDateString()}</p>
 
-
-      <h2>Seasons</h2>
+      <h2>{show.seasons.length} Seasons</h2>
       {show.seasons?.map((season, index) => (
         <div key={index} style={{ marginBottom: '20px' }}>
           <button

@@ -3,9 +3,9 @@ import { useEffect, useState } from "react";
 import { fetchPreviews, fetchShowById, genreMap } from "/server";
 
 export default function Genre() {
-  const { navigate } = useNavigate();  // Get genreId from the route
-  const { genreId } = useParams();  // Get genreId from the route
-  const genreName = genreMap[genreId];  // Map ID to genre name
+  const navigate = useNavigate();
+  const { genreId } = useParams(); 
+  const genreName = genreMap[genreId];
 
   const [shows, setShows] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -14,18 +14,27 @@ export default function Genre() {
     async function loadShowsByGenre() {
       try {
         const previews = await fetchPreviews();
+        console.log("⏳ Loaded previews:", previews.length);
 
-        // Filter previews to only those with matching genre ID
+        // Log each preview's genre
+        previews.forEach(p => console.log("Preview:", p.title, "genre:", p.genre));
+
         const filtered = previews.filter(preview => {
-          const ids = Array.isArray(preview.genre) ? preview.genre : [preview.genre];
-          return ids.includes(Number(genreId));
+          const ids = Array.isArray(preview.genres)
+            ? preview.genres
+            : [preview.genres];
+          const match = ids.includes(Number(genreId));
+          if (match) console.log("✅ Matched preview:", preview.title);
+          return match;
         });
 
-        // Fetch full details for those filtered shows
+        console.log("📦 Sample preview:", previews[0])
+
         const fullShows = await Promise.all(
           filtered.map(show => fetchShowById(show.id))
         );
 
+        console.log("Full show details loaded:", fullShows.length);
         setShows(fullShows);
       } catch (err) {
         console.error("Error loading genre shows:", err);
@@ -34,23 +43,32 @@ export default function Genre() {
       }
     }
 
+    console.log("Fetching shows for genreId:", genreId);
     loadShowsByGenre();
   }, [genreId]);
 
-  if (!genreName) return <p>Unknown genre</p>;
+  if (!genreName) return <p>❗ Unknown genre ID: {genreId}</p>;
   if (loading) return <p>Loading shows for {genreName}...</p>;
 
   return (
     <div>
-        <button onClick={() => navigate("/")}>← Back to Genres</button>
       <h1>{genreName}</h1>
-      <ul>
-        {shows.map(show => (
-          <li key={show.id}>
-            <strong>{show.title}</strong> ({show.seasons.length} seasons)
-          </li>
-        ))}
-      </ul>
+
+      <div>
+            {shows.length > 0 ? (
+            <div>
+            {shows.map(show => (
+                <div key={show.id}>
+                <strong>{show.title}</strong> ({show.seasons.length} seasons)
+                </div>
+            ))}
+            </div>
+        ) : (
+            <p>No shows found for this genre.</p>
+        )}
+      </div>
+      
+      <button onClick={() => navigate("/shows")}>← Back to Genres</button>
     </div>
   );
 }
