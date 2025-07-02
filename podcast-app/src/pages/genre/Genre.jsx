@@ -1,5 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { fetchPreviews, fetchShowById, genreMap } from "/server";
 
 export default function Genre() {
@@ -51,15 +52,17 @@ export default function Genre() {
   if (loading) return <p>Loading shows for {genreName}...</p>;
 
   return (
-    <div>
+    <div className="show-list">
       <h1>{genreName}</h1>
 
       <div>
             {shows.length > 0 ? (
-            <div>
+            <div className="show-list-container">
             {shows.map(show => (
-                <div key={show.id}>
-                <strong>{show.title}</strong> ({show.seasons.length} seasons)
+                <div key={show.id} className="show-genre-list-item">
+                    <img src={show.image} alt={show.title} />
+                <strong>{show.title}</strong> 
+                <Link to={`/shows/${show.id}`}>View Details</Link>
                 </div>
             ))}
             </div>
@@ -67,8 +70,8 @@ export default function Genre() {
             <p>No shows found for this genre.</p>
         )}
       </div>
-      
-      <button onClick={() => navigate("/shows")}>← Back to Genres</button>
+
+      <button onClick={() => navigate("/")}>← Back to Genres</button>
     </div>
   );
 }

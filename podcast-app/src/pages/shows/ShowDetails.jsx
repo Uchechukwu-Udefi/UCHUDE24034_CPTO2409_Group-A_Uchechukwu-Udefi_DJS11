@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { fetchShowById } from '/server';
 
 export default function ShowPage() {
-    const { id } = useParams();
+  const { id } = useParams();
+  const navigate = useNavigate();
   const [show, setShow] = useState(null);
   const [openSeasonIndex, setOpenSeasonIndex] = useState(null); // use index for consistency
 
@@ -66,6 +68,7 @@ export default function ShowPage() {
           )}
         </div>
       ))}
+      <button onClick={() => navigate("/shows")}>← Back to Genres</button>
     </div>
   );
 }
