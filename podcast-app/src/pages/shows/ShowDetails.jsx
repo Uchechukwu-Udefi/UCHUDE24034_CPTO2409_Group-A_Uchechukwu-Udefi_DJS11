@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { fetchShowById } from '/server';
 
@@ -7,7 +7,6 @@ export default function ShowPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [show, setShow] = useState(null);
-  const [openSeasonIndex, setOpenSeasonIndex] = useState(null); // use index for consistency
 
   useEffect(() => {
     async function loadShow() {
@@ -22,9 +21,6 @@ export default function ShowPage() {
     loadShow();
   }, [id]);
 
-  const toggleSeason = (index) => {
-    setOpenSeasonIndex(prev => (prev === index ? null : index));
-  };
 
   if (!show) return <p>Loading show...</p>;
 
@@ -37,37 +33,19 @@ export default function ShowPage() {
       <p><strong>Last Updated:</strong> {new Date(show.updated).toLocaleDateString()}</p>
 
       <h2>{show.seasons.length} Seasons</h2>
+      <div className='seasons-container'>
       {show.seasons?.map((season, index) => (
-        <div key={index} style={{ marginBottom: '20px' }}>
-          <button
-            onClick={() => toggleSeason(index)}
-            style={{
-              padding: '10px 20px',
-              backgroundColor: '#634DB8',
-              color: '#fff',
-              border: 'none',
-              borderRadius: '5px',
-              cursor: 'pointer',
-              marginBottom: '10px',
-              width: '100%',
-              textAlign: 'left',
-            }}
-          >
-            {openSeasonIndex === index ? '▼' : '▶'} Season {season.season}
+      <div key={index} className='seasons-card'>
+        <Link to={`/shows/${show.id}/season/${season.season}`}>
+          <img src={season.image} alt={`Season ${season.season}`} style={{ width: '150px', marginBottom: '10px' }} />
+          <button className='seasons-button'>
+            Season {season.season}
           </button>
+        </Link>
+  </div>
+))}
 
-          {openSeasonIndex === index && (
-            <div style={{ paddingLeft: '10px' }}>
-              {season.episodes.map((episode) => (
-                <div key={episode.id} style={{ marginBottom: '10px' }}>
-                  <strong>{episode.title}</strong><br />
-                  <audio controls src={episode.file}></audio>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      ))}
+      </div>
       <button onClick={() => navigate("/shows")}>← Back to Genres</button>
     </div>
   );
