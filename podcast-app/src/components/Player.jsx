@@ -1,6 +1,8 @@
 import { useState } from "react";
-import { usePlayback } from "./PlaybackContext";
+import { usePlayback } from "../context/PlaybackContext.jsx";
 
+// Player component to handle audio playback and UI
+// Displays current episode details and controls for playback
 export const Player = ({ isOpen, onClose }) => {
   const { currentEpisode } = usePlayback();
   const [isMinimized, setIsMinimized] = useState(false);

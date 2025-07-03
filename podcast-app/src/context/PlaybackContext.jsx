@@ -1,45 +1,46 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState, useEffect } from 'react';
 
 const PlaybackContext = createContext();
-PlaybackContext.displayName = "PlaybackContext";
 
 export function PlaybackProvider({ children }) {
-  const [currentEpisode, setCurrentEpisode] = useState(null);
-  const [history, setHistory] = useState([]);
+  // Try to load from localStorage if available
+  const [currentEpisode, setCurrentEpisodeState] = useState(() => {
+    const saved = typeof window !== 'undefined' && localStorage.getItem('currentEpisode');
+    return saved ? JSON.parse(saved) : null;
+  });
 
+  // Persist to localStorage whenever episode changes
   useEffect(() => {
-    try {
-      const saved = localStorage.getItem("playbackHistory");
-      setHistory(saved ? JSON.parse(saved) : []);
-    } catch (e) {
-      console.warn("Failed to load from localStorage", e);
+    if (typeof window !== 'undefined') {
+      if (currentEpisode) {
+        localStorage.setItem('currentEpisode', JSON.stringify(currentEpisode));
+      } else {
+        localStorage.removeItem('currentEpisode');
+      }
     }
-  }, []);
+  }, [currentEpisode]);
 
-  useEffect(() => {
-    try {
-      localStorage.setItem("playbackHistory", JSON.stringify(history));
-    } catch (e) {
-      console.warn("Failed to save to localStorage", e);
-    }
-  }, [history]);
+  const setCurrentEpisode = (episode) => {
+    setCurrentEpisodeState(episode);
+  };
 
-  const playShow = (episode) => {
-    if (!episode || !episode.id) return;
-    setCurrentEpisode(episode);
-    setHistory((prev) => {
-      const filtered = prev.filter((e) => e.id !== episode.id);
-      return [episode, ...filtered].slice(0, 10);
-    });
+  const value = {
+    currentEpisode,
+    setCurrentEpisode,
+    isPlaying: !!currentEpisode // Simple way to track play state
   };
 
   return (
-    <PlaybackContext.Provider value={{ currentEpisode, history, playShow }}>
+    <PlaybackContext.Provider value={value}>
       {children}
     </PlaybackContext.Provider>
   );
 }
 
 export function usePlayback() {
-  return useContext(PlaybackContext);
+  const context = useContext(PlaybackContext);
+  if (!context) {
+    throw new Error('usePlayback must be used within a PlaybackProvider');
+  }
+  return context;
 }
