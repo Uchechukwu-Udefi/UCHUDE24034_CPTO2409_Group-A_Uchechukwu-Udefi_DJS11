@@ -7,7 +7,7 @@ import Favorites from './pages/shows/FavoriteShows.jsx';
 import Genre from './pages/genre/Genre.jsx';
 import GenreList from './pages/genre/GenreList.jsx';
 import Season from './pages/shows/Seasons.jsx';
-import EpisodePage from './pages/shows/Episodes.jsx';
+import EpisodePlayer from './pages/shows/Episodes.jsx';
 
 
 
@@ -24,7 +24,7 @@ function App() {
         <Route path='/shows' element={<ShowList />} />
         <Route path='/shows/:id' element={<ShowDetails />} />
         <Route path="/shows/:id/season/:seasonNumber" element={<Season />} />
-        <Route path="/shows/:id/season/:seasonNumber/episode/:episodeId" element={<EpisodePage />} />
+        <Route path="/shows/:id/season/:seasonNumber/episode/:episodeId" element={<EpisodePlayer />} />
 
 
         <Route path='/favouriteshows' element={<Favorites />} />

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { fetchShowById } from '/server';
 
 export default function Season() {
@@ -38,10 +38,9 @@ export default function Season() {
         <div key={episode.id} style={{ marginBottom: '10px' }}>
             <strong>Episode: {index + 1}</strong><br />
           <strong>{episode.title}</strong><br />
-            <span>{episode.description}</span><br />
-          <button onClick={() => navigate(`/shows/${id}/season/${seasonData.season.season}/episode/${episode.id}`)}>
+          <Link to={`/shows/${id}/season/${seasonData.season.season}/episode/${index + 1}`}>
             ▶ Play
-        </button>
+          </Link>
         </div>
       ))}
 
