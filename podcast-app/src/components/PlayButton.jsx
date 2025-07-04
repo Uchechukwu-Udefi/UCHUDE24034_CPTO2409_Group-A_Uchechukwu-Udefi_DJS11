@@ -2,17 +2,22 @@ import { usePlayback } from '../context/PlaybackContext';
 
 export function PlayButton({ episode }) {
   const { currentEpisode, setCurrentEpisode } = usePlayback();
-
-  const isCurrentEpisode = currentEpisode?.id === episode.id;
+  const isCurrent = currentEpisode?.id === episode.id;
 
   return (
     <button
-      onClick={() => setCurrentEpisode(isCurrentEpisode ? null : episode)}
-      className={`px-4 py-2 rounded-full ${
-        isCurrentEpisode ? 'bg-red-500' : 'bg-blue-500'
-      } text-white`}
+      onClick={() => setCurrentEpisode(isCurrent ? null : episode)}
+      className="flex items-center space-x-2 bg-black text-white px-4 py-2 rounded"
     >
-      {isCurrentEpisode ? 'Pause' : 'Play'}
+      {isCurrent ? (
+        <>
+          <span>Pause</span>
+        </>
+      ) : (
+        <>
+          <span>Play Episode</span>
+        </>
+      )}
     </button>
   );
 }

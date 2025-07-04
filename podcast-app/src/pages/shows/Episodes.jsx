@@ -1,50 +1,51 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from 'react-router-dom';
 import { fetchShowById } from '/server';
-import { usePlayback } from '../../context/PlaybackContext.jsx';
-import { Player } from '../../components/Player.jsx';
+import { usePlayback } from "../../context/PlaybackContext";
+import { PlayButton } from "../../components/PlayButton.jsx";
 
 export default function EpisodePage() {
   const { id, seasonNumber, episodeId } = useParams();
   const navigate = useNavigate();
-  const [episodeData, setEpisodeData] = useState(null);
-  const [playerOpen, setPlayerOpen] = useState(true);
+  const [episode, setEpisode] = useState(null);
 
-  const { playShow } = usePlayback();
+  const { currentEpisode, playShow } = usePlayback();
 
   useEffect(() => {
-    async function loadEpisode() {
+    async function fetchEpisode() {
       try {
         const show = await fetchShowById(id);
         const season = show.seasons.find(s => String(s.season) === seasonNumber);
-        const episode = season?.episodes.find(e => String(e.id) === episodeId);
+        const ep = season?.episodes.find(e => String(e.id) === episodeId);
 
-        if (season && episode) {
-          const fullEpisode = {
-            ...episode,
+        if (ep) {
+          const enrichedEpisode = {
+            ...ep,
             showTitle: show.title,
             seasonNumber: season.season,
           };
-          setEpisodeData(fullEpisode);
-          playShow(fullEpisode); // set in context for Player
+          setEpisode(enrichedEpisode);
+          playShow(enrichedEpisode); // Auto-play
         }
       } catch (error) {
-        console.error("Error loading episode:", error);
+        console.error("Failed to load episode", error);
       }
     }
 
-    loadEpisode();
-  }, [id, seasonNumber, episodeId, playShow]);
+    fetchEpisode();
+  }, [id, seasonNumber, episodeId]);
 
-  if (!episodeData) return <p>Loading episode...</p>;
+  if (!episode) return <div>Loading...</div>;
+
+  const isCurrentEpisode = currentEpisode?.id === episode.id;
 
   return (
     <div style={{ padding: '1rem' }}>
-      <h1>{episodeData.showTitle} - Season {episodeData.seasonNumber}</h1>
-      <h2>{episodeData.title}</h2>
-      <p>{episodeData.description}</p>
+      <h1>{episode.showTitle} - Season {episode.seasonNumber}</h1>
+      <h2>{episode.title}</h2>
+      <p>{episode.description}</p>
 
-      <Player isOpen={playerOpen} onClose={() => setPlayerOpen(false)} />
+      <PlayButton episode={episode} isPlaying={isCurrentEpisode} />
 
       <br /><br />
       <button onClick={() => navigate(`/shows/${id}/season/${seasonNumber}`)}>
