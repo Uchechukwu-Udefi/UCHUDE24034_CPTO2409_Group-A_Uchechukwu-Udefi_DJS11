@@ -37,12 +37,39 @@ header {
   align-items: center;
   justify-content: space-between;
   padding-block: 10px;
+  position: relative;
 }
 
 header .site-logo {
-  margin-right: auto;
   height: 3.25em;
   width: auto;
+}
+
+header .site-title {
+  margin-right: auto;
+  height: 2.25em;
+  width: auto;
+}
+
+.hamburger {
+  display: none;
+  font-size: 24px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #f87a20;
+  padding: 10px;
+  z-index: 1000;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  transition: color 0.3s ease;
+  
+}
+
+nav {
+  display: flex;
+  gap: 10px;
 }
 
 header a {
@@ -67,8 +94,30 @@ header .login-link {
   align-items: center;
 }
 
-nav {
-  display: flex;
+@media (max-width: 768px) {
+  .hamburger {
+    display: block;
+  }
+
+    nav {
+    flex-direction: column;
+    position: absolute;
+    top: 50px;
+    left: 0;
+    right: 0;
+    background: white;
+    display: none;
+    padding: 10px;
+    border-top: 1px solid #ddd;
+  }
+
+  nav.open {
+    display: flex;
+  }
+
+  nav a {
+    padding: 10px;
+  }
 }
 
 main {
