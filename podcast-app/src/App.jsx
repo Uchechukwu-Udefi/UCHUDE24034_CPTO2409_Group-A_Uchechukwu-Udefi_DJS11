@@ -8,6 +8,8 @@ import Genre from './pages/genre/Genre.jsx';
 import GenreList from './pages/genre/GenreList.jsx';
 import Season from './pages/shows/Seasons.jsx';
 import EpisodePlayer from './pages/shows/Episodes.jsx';
+import { PlaybackProvider } from './context/PlaybackContext.jsx';
+import GlobalPlayer from './components/GlobalPlayer.jsx';
 
 
 
@@ -17,8 +19,10 @@ function App() {
 
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Layout />}>
+      <PlaybackProvider>
+
+        <Routes>
+          <Route path="/" element={<Layout />}>
 
         <Route index element={<Home />} />
         <Route path='/shows' element={<ShowList />} />
@@ -34,8 +38,11 @@ function App() {
 
         </Route>
       </Routes>
-    </BrowserRouter>
-  );
+
+        <GlobalPlayer />
+    </PlaybackProvider>
+  </BrowserRouter>
+);
 }
 
 export default App

@@ -1,5 +1,6 @@
-// PlaybackContext.js
 import { createContext, useContext, useState, useEffect, useRef } from "react";
+import { useLocation } from "react-router-dom";
+import GlobalPlayer from "../components/GlobalPlayer.jsx";
 
 const PlaybackContext = createContext();
 
@@ -8,59 +9,65 @@ export function PlaybackProvider({ children }) {
   const [history, setHistory] = useState([]);
   const audioRef = useRef(null);
 
-  // Load playback history from localStorage
   useEffect(() => {
     const saved = JSON.parse(localStorage.getItem("playbackHistory")) || [];
     setHistory(saved);
   }, []);
 
-  // Save playback history to localStorage
   useEffect(() => {
     localStorage.setItem("playbackHistory", JSON.stringify(history));
   }, [history]);
 
-  // Play audio when currentEpisode changes
   useEffect(() => {
     if (currentEpisode?.audioUrl && audioRef.current) {
-      audioRef.current.src = currentEpisode.audioUrl;
-      const playPromise = audioRef.current.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(err =>
-          console.warn("Autoplay failed, user gesture required", err)
-        );
-      }
+      const audio = audioRef.current;
+      const wasPlaying = !audio.paused && !audio.ended;
+
+      audio.pause();
+      audio.src = currentEpisode.audioUrl;
+      audio.load();
+
+      const tryResume = () => {
+        if (wasPlaying) {
+          audio.play().catch(err => console.warn("Playback resume failed:", err));
+        }
+      };
+
+      audio.addEventListener('loadedmetadata', tryResume, { once: true });
+
+      return () => {
+        audio.removeEventListener('loadedmetadata', tryResume);
+      };
     }
   }, [currentEpisode]);
 
   const playShow = (episode) => {
-    if (!episode) return;
+  if (!episode) return;
 
-    // Force re-trigger playback if same episode
-    if (episode.id !== currentEpisode?.id) {
-      setCurrentEpisode(episode);
-    } else {
-      setCurrentEpisode(null);
-      setTimeout(() => setCurrentEpisode(episode), 50);
-    }
+  const episodeKey = `${episode.showId || episode.id}-${episode.seasonNumber}-${episode.episode}`;
 
-    setHistory(prev => {
-      const filtered = prev.filter(e => e.id !== episode.id);
-      return [episode, ...filtered].slice(0, 10);
-    });
+  const enrichedEpisode = {
+    ...episode,
+    _key: episodeKey, // internal key for uniqueness
   };
 
-  return (
-    <PlaybackContext.Provider value={{ currentEpisode, playShow, history }}>
-      {children}
+  if (episodeKey !== currentEpisode?._key) {
+    setCurrentEpisode(enrichedEpisode);
+  } else {
+    setCurrentEpisode(null);
+    setTimeout(() => setCurrentEpisode(enrichedEpisode), 50);
+  }
 
-      {/* Global audio player */}
-      <audio ref={audioRef} controls style={{
-        position: "fixed",
-        bottom: 0,
-        width: "100%",
-        zIndex: 1000,
-        background: "white"
-      }} />
+  setHistory(prev => {
+    const filtered = prev.filter(e => e._key !== episodeKey);
+    return [enrichedEpisode, ...filtered].slice(0, 10);
+  });
+};
+
+  return (
+    <PlaybackContext.Provider value={{ currentEpisode, playShow, history, audioRef }}>
+      {children}
+      <GlobalPlayer />
     </PlaybackContext.Provider>
   );
 }
