@@ -10,6 +10,7 @@ import Season from './pages/shows/Seasons.jsx';
 import EpisodePlayer from './pages/shows/Episodes.jsx';
 import { PlaybackProvider } from './context/PlaybackContext.jsx';
 import GlobalPlayer from './components/GlobalPlayer.jsx';
+import Search from './components/Search.jsx';
 
 
 
@@ -23,7 +24,7 @@ function App() {
 
         <Routes>
           <Route path="/" element={<Layout />}>
-
+        <Route path='/search' element={<Search />} />
         <Route index element={<Home />} />
         <Route path='/shows' element={<ShowList />} />
         <Route path='/shows/:id' element={<ShowDetails />} />
