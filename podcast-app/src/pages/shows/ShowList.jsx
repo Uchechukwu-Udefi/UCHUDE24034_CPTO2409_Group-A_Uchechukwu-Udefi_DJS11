@@ -25,18 +25,23 @@ export default function ShowList() {
     return(
         <div className="show-list">
         
-            <h2>The best stories and ideas all in one place</h2>
+            <div className="show-list-intro">
+               <h2>The best stories and ideas all in one place</h2>
+            </div>
 
             <GenreList />
 
             <h2>Explore all shows (A-Z)</h2>
             <div className="show-list-container">
-              {previews.map(preview => (
-              <div key={preview.id} className="show-list-item">
-                  <img src={preview.image} alt={preview.title} />
-                  <h3>{preview.title}</h3>
-                  <Link to={`/shows/${preview.id}`}>View Details</Link>
-              </div>
+              {previews
+                .slice() // create a shallow copy to avoid mutating the original array
+                .sort((a, b) => a.title.localeCompare(b.title)) // sort alphabetically by title
+                .map(preview => (
+                  <div key={preview.id} className="show-list-item">
+                    <img src={preview.image} alt={preview.title} />
+                    <h3>{preview.title}</h3>
+                    <Link to={`/shows/${preview.id}`}>View Details</Link>
+                  </div>
               ))}
             </div>
             
