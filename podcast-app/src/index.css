@@ -310,25 +310,53 @@ footer {
 /*** SHOW GENRE PAGES ***/
 
 .genre-container {
-  max-width: 1000px;
-  margin: 40px auto;
   padding: 20px;
-  font-family: Arial, sans-serif;
 }
 
 .genre-container h1 {
   text-align: center;
-  margin-bottom: 30px;
-  font-size: 2rem;
-  color: #161616;
+  margin-bottom: 20px;
 }
 
 .genre-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: 16px;
   justify-content: center;
 }
+
+.genre-list-link {
+  padding: 10px 16px;
+  background-color: #eee;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #333;
+  white-space: nowrap;
+  transition: background-color 0.3s;
+}
+
+.genre-list-link:hover {
+  background-color: #ddd;
+}
+
+/* Responsive: turn into horizontal scroll on small screens */
+@media (max-width: 768px) {
+  .genre-list {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 10px;
+    justify-content: flex-start;
+  }
+
+  .genre-list-link {
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+  }
+}
+
 
 .genre-list-link {
   flex: 1 1 200px;
