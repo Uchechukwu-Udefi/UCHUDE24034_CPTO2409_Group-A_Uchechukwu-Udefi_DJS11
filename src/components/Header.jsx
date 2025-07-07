@@ -1,7 +1,7 @@
 import { Link, NavLink } from "react-router-dom"
-import { useState
+import { useState } from "react";
+import { FaRegUserCircle } from "react-icons/fa";
 
- } from "react";
 export default function Header() {
 
     const [menuOpen, setMenuOpen] = useState(false);
@@ -26,7 +26,7 @@ export default function Header() {
                     <NavLink to="/shows" end style={ ({isActive}) => isActive ? activeStyles : null } onClick={handleLinkClick}>🌐 Explore</NavLink>
                     <NavLink to="/search" style={ ({isActive}) => isActive? activeStyles : null } onClick={handleLinkClick}>🔍 Search</NavLink>
                     <Link to="login" className="login-link" onClick={handleLinkClick}>
-                        <img src="../assets/images/avatar-icon.png" className="login-icon"/>
+                        <FaRegUserCircle />
                     </Link>
                 </nav> 
         </header>
