@@ -18,8 +18,8 @@ export default function Header() {
 
     return (
         <header>
-                <Link className="site-link" to="/"><img className="site-logo" src='../assets/images/u-tune_logo_1.png' alt="U-Tune Logo"/></Link>
-                <Link className="site-title" to="/"><img className="site-title" src='../assets/images/u-tune_logo_2.png' alt="U-Tune Title"/></Link>
+                <Link className="site-link" to="/"><img className="site-logo" src='public/u-tune_logo_1.png' alt="U-Tune Logo"/></Link>
+                <Link className="site-title" to="/"><img className="site-title" src='public/u-tune_logo_2.png' alt="U-Tune Title"/></Link>
                 <button className="hamburger" onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? '×' : '☰'}</button>
                 <nav className={menuOpen ? 'open' : ''}>
                     <NavLink to="/favouriteshows"  style={ ({isActive}) => isActive ? activeStyles : null } onClick={handleLinkClick}>❤️ Favourites</NavLink>
