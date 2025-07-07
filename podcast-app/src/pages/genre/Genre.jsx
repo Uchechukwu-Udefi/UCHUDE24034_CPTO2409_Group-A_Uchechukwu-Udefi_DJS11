@@ -15,7 +15,6 @@ export default function Genre() {
     async function loadShowsByGenre() {
       try {
         const previews = await fetchPreviews();
-        console.log("⏳ Loaded previews:", previews.length);
 
         // Log each preview's genre
         previews.forEach(p => console.log("Preview:", p.title, "genre:", p.genre));
@@ -25,7 +24,6 @@ export default function Genre() {
             ? preview.genres
             : [preview.genres];
           const match = ids.includes(Number(genreId));
-          if (match) console.log("✅ Matched preview:", preview.title);
           return match;
         });
 
@@ -35,7 +33,6 @@ export default function Genre() {
           filtered.map(show => fetchShowById(show.id))
         );
 
-        console.log("Full show details loaded:", fullShows.length);
         setShows(fullShows);
       } catch (err) {
         console.error("Error loading genre shows:", err);
@@ -43,8 +40,7 @@ export default function Genre() {
         setLoading(false);
       }
     }
-
-    console.log("Fetching shows for genreId:", genreId);
+    
     loadShowsByGenre();
   }, [genreId]);
 
