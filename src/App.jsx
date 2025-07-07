@@ -11,7 +11,7 @@ import EpisodePlayer from './pages/shows/Episodes.jsx';
 import { PlaybackProvider } from './context/PlaybackContext.jsx';
 import GlobalPlayer from './components/GlobalPlayer.jsx';
 import Search from './components/Search.jsx';
-
+import Login from './components/Login.jsx';
 
 
 
@@ -36,6 +36,8 @@ function App() {
         
         <Route path="/genre" element={<GenreList />} />
         <Route path="/genre/:genreId" element={<Genre />} />
+
+        <Route path="/login" element={<Login />} />
 
         </Route>
       </Routes>

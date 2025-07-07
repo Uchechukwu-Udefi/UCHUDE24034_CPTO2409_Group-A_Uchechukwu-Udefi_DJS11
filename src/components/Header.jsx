@@ -25,7 +25,7 @@ export default function Header() {
                     <NavLink to="/favouriteshows"  style={ ({isActive}) => isActive ? activeStyles : null } onClick={handleLinkClick}>❤️ Favourites</NavLink>
                     <NavLink to="/shows" end style={ ({isActive}) => isActive ? activeStyles : null } onClick={handleLinkClick}>🌐 Explore</NavLink>
                     <NavLink to="/search" style={ ({isActive}) => isActive? activeStyles : null } onClick={handleLinkClick}>🔍 Search</NavLink>
-                    <Link to="login" className="login-link" onClick={handleLinkClick}>
+                    <Link to="/login" className="login-link" onClick={handleLinkClick}>
                         <FaRegUserCircle />
                     </Link>
                 </nav> 
