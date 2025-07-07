@@ -1,77 +1,99 @@
-import { createContext, useContext, useState, useEffect, useRef } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useRef,
+} from "react";
 import { useLocation } from "react-router-dom";
 import GlobalPlayer from "../components/GlobalPlayer.jsx";
 
+// Create Context
 const PlaybackContext = createContext();
 
+// Playback Provider
 export function PlaybackProvider({ children }) {
   const [currentEpisode, setCurrentEpisode] = useState(null);
+  const [seasonEpisodes, setSeasonEpisodes] = useState([]);
   const [history, setHistory] = useState([]);
   const audioRef = useRef(null);
+  const location = useLocation();
 
+  // 🧠 Determine if we are on the full episode player view
+  const isEpisodePlayerPage = /^\/shows\/[^/]+\/season\/[^/]+\/episode\/[^/]+$/.test(location.pathname);
+
+  // 📦 Load history from localStorage on first load
   useEffect(() => {
     const saved = JSON.parse(localStorage.getItem("playbackHistory")) || [];
     setHistory(saved);
   }, []);
 
+  // 💾 Persist history to localStorage when updated
   useEffect(() => {
     localStorage.setItem("playbackHistory", JSON.stringify(history));
   }, [history]);
 
+  // 🔁 Set audio source when currentEpisode changes
   useEffect(() => {
     if (currentEpisode?.audioUrl && audioRef.current) {
       const audio = audioRef.current;
-      const wasPlaying = !audio.paused && !audio.ended;
-
       audio.pause();
       audio.src = currentEpisode.audioUrl;
-      audio.load();
-
-      const tryResume = () => {
-        if (wasPlaying) {
-          audio.play().catch(err => console.warn("Playback resume failed:", err));
-        }
-      };
-
-      audio.addEventListener('loadedmetadata', tryResume, { once: true });
-
-      return () => {
-        audio.removeEventListener('loadedmetadata', tryResume);
-      };
+      audio.load(); // Do not auto-play here to respect autoplay restrictions
     }
   }, [currentEpisode]);
 
+  // ▶️ Play selected episode if it's not already playing
   const playShow = (episode) => {
-  if (!episode) return;
+    if (!episode) return;
 
-  const episodeKey = `${episode.showId || episode.id}-${episode.seasonNumber}-${episode.episode}`;
+    const episodeKey = `${episode.showId || episode.id}-${episode.seasonNumber}-${episode.episode}`;
 
-  const enrichedEpisode = {
-    ...episode,
-    _key: episodeKey, // internal key for uniqueness
+    // Skip reloading the same episode
+    if (episodeKey === currentEpisode?._key) return;
+
+    const enrichedEpisode = {
+      ...episode,
+      _key: episodeKey,
+    };
+
+    setCurrentEpisode(enrichedEpisode);
+
+    // Update playback history
+    setHistory((prev) => {
+      const filtered = prev.filter((e) => e._key !== episodeKey);
+      return [enrichedEpisode, ...filtered].slice(0, 10);
+    });
   };
 
-  if (episodeKey !== currentEpisode?._key) {
-    setCurrentEpisode(enrichedEpisode);
-  } else {
-    setCurrentEpisode(null);
-    setTimeout(() => setCurrentEpisode(enrichedEpisode), 50);
-  }
-
-  setHistory(prev => {
-    const filtered = prev.filter(e => e._key !== episodeKey);
-    return [enrichedEpisode, ...filtered].slice(0, 10);
-  });
-};
+  // Optional: Load entire season’s episodes (for next/prev logic)
+  const loadSeason = (episodes) => {
+    setSeasonEpisodes(episodes);
+  };
 
   return (
-    <PlaybackContext.Provider value={{ currentEpisode, playShow, history, audioRef }}>
+    <PlaybackContext.Provider
+      value={{
+        currentEpisode,
+        playShow,
+        audioRef,
+        history,
+        seasonEpisodes,
+        loadSeason,
+      }}
+    >
       {children}
-      <GlobalPlayer />
+
+      {/* Global player visible only outside episode full page */}
+      {!isEpisodePlayerPage && <GlobalPlayer />}
+
+      {/* Hidden audio tag that controls playback */}
+      <audio ref={audioRef} preload="metadata" />
     </PlaybackContext.Provider>
   );
 }
 
+// Hook for easy context access
 export function usePlayback() {
   return useContext(PlaybackContext);
 }

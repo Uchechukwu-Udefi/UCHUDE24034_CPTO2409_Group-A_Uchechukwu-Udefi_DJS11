@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { usePlayback } from "../context/PlaybackContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 export default function GlobalPlayer() {
   const { currentEpisode, audioRef } = usePlayback();
@@ -8,7 +8,12 @@ export default function GlobalPlayer() {
   const [progress, setProgress] = useState(0);
   const [volume, setVolume] = useState(1);
   const [isExpanded, setIsExpanded] = useState(false);
+
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Hide player on the EpisodePlayer page
+  const isEpisodePage = /\/shows\/[^/]+\/season\/[^/]+\/episode\/[^/]+/.test(location.pathname);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -28,6 +33,8 @@ export default function GlobalPlayer() {
       audio.removeEventListener("pause", handlePause);
     };
   }, [audioRef]);
+
+  if (isEpisodePage) return null;
 
   const togglePlayback = () => {
     const audio = audioRef.current;
@@ -55,59 +62,46 @@ export default function GlobalPlayer() {
   if (!currentEpisode) return null;
 
   return (
-    <div style={{
-      position: "fixed",
-      bottom: 0,
-      width: "100%",
-      background: "#fff",
-      borderTop: "1px solid #ccc",
-      zIndex: 1000,
-      padding: isExpanded ? "1rem" : "0.5rem 1rem",
-      display: "flex",
-      flexDirection: isExpanded ? "column" : "row",
-      alignItems: isExpanded ? "flex-start" : "center",
-      gap: isExpanded ? "1rem" : "0.5rem",
-    }}>
-      {/* Top row: collapsed view */}
-      <div style={{ display: "flex", alignItems: "center", width: "100%" }}>
+    <div className={`global-player ${isExpanded ? "expanded" : ""}`}>
+      <div className="global-player__header">
         <img
           src={currentEpisode.seasonImage}
           alt=""
-          style={{ width: 50, height: 50, borderRadius: 4, marginRight: 12, objectFit: "cover" }}
-          onClick={() => navigate(`/shows/${currentEpisode.showId || currentEpisode.id}/season/${currentEpisode.seasonNumber}/episode/${currentEpisode.episode}`)}
+          className="global-player__thumbnail"
+          onClick={() =>
+            navigate(`/shows/${currentEpisode.showId}/season/${currentEpisode.seasonNumber}/episode/${currentEpisode.episode}`)
+          }
         />
-        <div style={{ flex: 1 }}>
-          <strong>{currentEpisode.showTitle}</strong><br />
+        <div className="global-player__info">
+          <strong>{currentEpisode.showTitle}</strong>
+          <br />
           <small>{currentEpisode.title}</small>
         </div>
 
-        <button onClick={togglePlayback}>
+        <button onClick={togglePlayback} className="global-player__button">
           {isPlaying ? "⏸" : "▶"}
         </button>
 
-        <button onClick={() => setIsExpanded(!isExpanded)} style={{ marginLeft: "1rem" }}>
+        <button onClick={() => setIsExpanded(!isExpanded)} className="global-player__button">
           {isExpanded ? "🔽" : "🔼"}
         </button>
       </div>
 
       {isExpanded && (
-        <>
-          {/* Seek Bar */}
-          <div style={{ width: "100%" }}>
-            <input
-              type="range"
-              min="0"
-              max="100"
-              value={duration ? (progress / duration) * 100 : 0}
-              onChange={seek}
-              style={{ width: "100%" }}
-            />
-            <small>{formattedTime(progress)} / {formattedTime(duration)}</small>
-          </div>
+        <div className="global-player__body">
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value={duration ? (progress / duration) * 100 : 0}
+            onChange={seek}
+          />
+          <small>
+            {formattedTime(progress)} / {formattedTime(duration)}
+          </small>
 
-          {/* Volume */}
-          <div style={{ width: "100%", display: "flex", alignItems: "center", gap: "1rem" }}>
-            <span>Volume</span>
+          <div className="global-player__volume">
+            Volume:
             <input
               type="range"
               min="0"
@@ -115,19 +109,18 @@ export default function GlobalPlayer() {
               step="0.01"
               value={volume}
               onChange={handleVolumeChange}
-              style={{ flex: 1 }}
             />
           </div>
 
           <button
             onClick={() =>
-              navigate(`/now-playing`)
+              navigate(`/shows/${currentEpisode.showId}/season/${currentEpisode.seasonNumber}/episode/${currentEpisode.episode}`)
             }
-            style={{ alignSelf: "flex-end", marginTop: "0.5rem" }}
+            className="global-player__open-btn"
           >
             Open Full Player 🎧
           </button>
-        </>
+        </div>
       )}
     </div>
   );

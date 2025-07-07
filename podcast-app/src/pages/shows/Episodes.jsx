@@ -1,32 +1,37 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from 'react-router-dom';
-import { fetchShowById } from '/server';
+import { useParams, useNavigate } from "react-router-dom";
+import { fetchShowById } from "/server"; // Adjust path if needed
 import { usePlayback } from "../../context/PlaybackContext";
 
 export default function EpisodePlayer() {
   const { id, seasonNumber, episodeId } = useParams();
   const navigate = useNavigate();
+
   const [episode, setEpisode] = useState(null);
-  const [seasonEpisodes, setSeasonEpisodes] = useState([]);
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const [volume, setVolume] = useState(1);
-  const { playShow, audioRef } = usePlayback();
 
+  const { playShow, audioRef, loadSeason, seasonEpisodes } = usePlayback();
   const episodeIndex = Number(episodeId) - 1;
 
+  // Fetch episode + season data
   useEffect(() => {
     async function fetchEpisode() {
       try {
         const show = await fetchShowById(id);
         const season = show.seasons.find(s => String(s.season) === seasonNumber);
-        if (!season || !season.episodes) return;
+        if (!season) return;
 
-        setSeasonEpisodes(season.episodes);
-        const ep = season.episodes[episodeIndex];
+        const episodes = season.episodes || [];
+        loadSeason(episodes);
+
+        const ep = episodes[episodeIndex];
+        if (!ep) return;
 
         const enriched = {
           ...ep,
+          showId: show.id,
           showTitle: show.title,
           seasonNumber: season.season,
           seasonImage: season.image,
@@ -43,6 +48,7 @@ export default function EpisodePlayer() {
     fetchEpisode();
   }, [id, seasonNumber, episodeId]);
 
+  // Sync UI with audio element
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
@@ -66,16 +72,8 @@ export default function EpisodePlayer() {
     const audio = audioRef.current;
     if (!audio) return;
 
-    if (audio.readyState < 2) {
-      // Wait until audio is ready
-      audio.addEventListener('loadedmetadata', () => {
-        audio.play().catch(err => console.warn("Play failed:", err));
-      }, { once: true });
-      return;
-    }
-
     if (audio.paused) {
-      audio.play().catch(err => console.warn("Play failed:", err));
+      audio.play().catch((err) => console.warn("Play failed:", err));
     } else {
       audio.pause();
     }
@@ -98,16 +96,17 @@ export default function EpisodePlayer() {
     navigate(`/shows/${id}/season/${seasonNumber}/episode/${index + 1}`);
   };
 
-  if (!episode) return <div>Loading...</div>;
+  if (!episode) return <div>Loading episode...</div>;
 
   const audio = audioRef.current;
   const duration = audio?.duration || 0;
+
   const formattedTime = (s) =>
     isNaN(s) ? "--:--" : new Date(s * 1000).toISOString().substr(14, 5);
 
   return (
-    <div style={{ padding: '1rem', paddingBottom: '4rem' }}>
-      <img src={episode.seasonImage} alt="" style={{ width: '200px' }} />
+    <div style={{ padding: "1rem", paddingBottom: "4rem" }}>
+      <img src={episode.seasonImage} alt="" style={{ width: "200px" }} />
       <h1>{episode.showTitle} - Season {episode.seasonNumber}</h1>
       <h2>Episode: {episodeId} - {episode.title}</h2>
       <p>{episode.description}</p>
@@ -116,14 +115,18 @@ export default function EpisodePlayer() {
         ← Back to Season
       </button>
 
-      {/* Custom Controls */}
-      <div style={{ marginTop: "2rem", padding: "1rem", background: "#eee", borderRadius: "8px" }}>
-        <div style={{ marginBottom: '0.5rem' }}>
+      <div style={{
+        marginTop: "2rem",
+        padding: "1rem",
+        background: "#eee",
+        borderRadius: "8px"
+      }}>
+        <div style={{ marginBottom: "0.5rem" }}>
           <button onClick={() => goToEpisode(episodeIndex - 1)} disabled={episodeIndex <= 0}>
             ⏮ Prev
           </button>
 
-          <button onClick={togglePlayback} style={{ margin: '0 1rem' }}>
+          <button onClick={togglePlayback} style={{ margin: "0 1rem" }}>
             {isPlaying ? "⏸ Pause" : "▶ Play"}
           </button>
 
@@ -132,22 +135,18 @@ export default function EpisodePlayer() {
           </button>
         </div>
 
-        {/* Seek bar */}
+        <input
+          type="range"
+          min="0"
+          max="100"
+          value={duration ? (progress / duration) * 100 : 0}
+          onChange={seek}
+          style={{ width: "80%" }}
+        />
         <div>
-          <input
-            type="range"
-            min="0"
-            max="100"
-            value={duration ? (progress / duration) * 100 : 0}
-            onChange={seek}
-            style={{ width: "80%" }}
-          />
-          <div>
-            {formattedTime(progress)} / {formattedTime(duration)}
-          </div>
+          {formattedTime(progress)} / {formattedTime(duration)}
         </div>
 
-        {/* Volume control */}
         <div style={{ marginTop: "0.5rem" }}>
           Volume:
           <input
