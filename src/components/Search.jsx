@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { fetchPreviews, genreMap } from '../../server';
+import Loading from './LoadingSpinner';
 
 let cachedPreviews = null;
 
@@ -49,64 +50,40 @@ export default function Search() {
   const resultGenres = Array.from(new Set(results.flatMap(show => show.genres || [])));
 
   return (
-    <div style={{ padding: '1rem' }}>
+    <div className="search-container">
       <h1>Search Shows</h1>
       <input
         type="text"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         placeholder="Start typing to search..."
-        style={{ padding: '0.5rem', width: '60%' }}
+        className="search-input"
       />
 
-      {loading && <p>Loading...</p>}
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {loading && <Loading />}
+      {error && <p className="error-text">{error}</p>}
 
       {results.length > 0 && (
         <>
-          <div style={{ marginTop: '2rem' }}>
+          <div className="genres-section">
             <h2>Genres Found in Results</h2>
             <div className="genre-list">
               {resultGenres.map((genreId) => (
-                <Link
-                  to={`/genre/${genreId}`}
-                  key={genreId}
-                  className="genre-tag"
-                  style={{
-                    marginRight: '1rem',
-                    display: 'inline-block',
-                    textDecoration: 'none',
-                    color: '#555',
-                    padding: '0.4rem 0.8rem',
-                    border: '1px solid #ccc',
-                    borderRadius: '5px',
-                    background: '#f9f9f9'
-                  }}
-                >
+                <Link to={`/genre/${genreId}`} key={genreId} className="genre-tag">
                   {genreMap[genreId]}
                 </Link>
               ))}
             </div>
           </div>
 
-          <div style={{ marginTop: '1.5rem' }}>
+          <div className="results-section">
             <h2>Search Results</h2>
             {results.map((show) => (
-              <Link
-                to={`/shows/${show.id}`}
-                key={show.id}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  marginBottom: '1rem',
-                  textDecoration: 'none',
-                  color: '#000'
-                }}
-              >
-                <img src={show.image} alt={show.title} style={{ width: '100px', borderRadius: '5px' }} />
-                <div style={{ marginLeft: '1rem' }}>
-                  <div style={{ fontWeight: 'bold' }}>{show.title}</div>
-                  <div style={{ fontSize: '0.9rem', color: '#666' }}>
+              <Link to={`/shows/${show.id}`} key={show.id} className="show-item">
+                <img src={show.image} alt={show.title} className="show-image" />
+                <div className="show-details">
+                  <div className="show-title">{show.title}</div>
+                  <div className="show-genres">
                     Genres: {(show.genres || []).map(id => genreMap[id]).join(', ')}
                   </div>
                 </div>
@@ -116,10 +93,9 @@ export default function Search() {
         </>
       )}
 
-      {/* No Results */}
       {query.trim() !== '' && !loading && results.length === 0 && (
-        <p style={{ marginTop: '2rem', color: '#666', fontStyle: 'italic' }}>
-          No results found for `<strong>{query}</strong>`.
+        <p className="no-results">
+          No results found for <strong>{query}</strong>.
         </p>
       )}
     </div>
