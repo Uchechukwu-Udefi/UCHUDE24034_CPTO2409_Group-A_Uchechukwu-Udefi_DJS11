@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { fetchShowById } from '/server';
+import Loading from '../../components/LoadingSpinner';
 
 export default function Season() {
   const { id, seasonNumber } = useParams();
@@ -26,7 +27,7 @@ export default function Season() {
     loadSeason();
   }, [id, seasonNumber]);
 
-  if (!seasonData) return <p>Loading season...</p>;
+  if (!seasonData) return <Loading />;
 
   return (
     <div style={{ padding: '1rem' }}>

@@ -2,6 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { fetchPreviews, fetchShowById, genreMap } from "/server";
+import Loading from "../../components/LoadingSpinner";
 
 export default function Genre() {
   const navigate = useNavigate();
@@ -15,10 +16,12 @@ export default function Genre() {
     async function loadShowsByGenre() {
       try {
         const previews = await fetchPreviews();
-
-        // Log each preview's genre
-        previews.forEach(p => console.log("Preview:", p.title, "genre:", p.genre));
-
+        
+        if (!previews || previews.length === 0) {
+          console.warn("No previews found for genre:", genreId);
+          return;
+        }
+        // Filter shows by genre ID
         const filtered = previews.filter(preview => {
           const ids = Array.isArray(preview.genres)
             ? preview.genres
@@ -26,8 +29,6 @@ export default function Genre() {
           const match = ids.includes(Number(genreId));
           return match;
         });
-
-        console.log("📦 Sample preview:", previews[0])
 
         const fullShows = await Promise.all(
           filtered.map(show => fetchShowById(show.id))
@@ -45,7 +46,7 @@ export default function Genre() {
   }, [genreId]);
 
   if (!genreName) return <p>❗ Unknown genre ID: {genreId}</p>;
-  if (loading) return <p>Loading shows for {genreName}...</p>;
+  if (loading) return <Loading />;
 
   return (
     <div className="show-list">

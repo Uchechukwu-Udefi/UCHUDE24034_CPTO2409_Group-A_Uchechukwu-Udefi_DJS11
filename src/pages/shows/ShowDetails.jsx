@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { fetchShowById } from '/server';
+import Loading from '../../components/LoadingSpinner';
 
 export default function ShowPage() {
   const { id } = useParams();
@@ -22,7 +23,7 @@ export default function ShowPage() {
   }, [id]);
 
 
-  if (!show) return <p>Loading show...</p>;
+  if (!show) return <Loading />;
 
   return (
     <div style={{ padding: '1rem' }}>
