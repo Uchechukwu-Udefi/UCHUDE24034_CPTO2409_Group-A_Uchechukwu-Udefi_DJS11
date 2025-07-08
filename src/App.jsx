@@ -12,6 +12,7 @@ import { PlaybackProvider } from './context/PlaybackContext.jsx';
 import GlobalPlayer from './components/GlobalPlayer.jsx';
 import Search from './components/Search.jsx';
 import Login from './components/Login.jsx';
+import Register from './components/Register.jsx';
 
 
 
@@ -38,6 +39,7 @@ function App() {
         <Route path="/genre/:genreId" element={<Genre />} />
 
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
 
         </Route>
       </Routes>

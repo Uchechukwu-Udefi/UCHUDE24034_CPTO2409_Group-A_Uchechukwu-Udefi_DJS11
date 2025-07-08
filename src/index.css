@@ -628,7 +628,7 @@ footer {
   border: 1px solid #ccc;
   border-radius: 10px;
   font-size: 1rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .error-text {
@@ -690,3 +690,115 @@ footer {
   color: #666;
   font-style: italic;
 }
+
+
+/*** LOGIN STYLES ***/
+.login-container {
+  max-width: 300px;
+  margin: 50px auto;
+  padding: 2rem;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.10);
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.login-form input {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.login-form button {
+  padding: 0.75rem;
+  background-color: #f87a20;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.login-form button:hover {
+  background-color: #2DD4BF;
+}
+
+.login-container h2 {
+  color: #634DB8;
+  margin-bottom: 1rem;
+}
+
+.login-container p {
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.login-container a {
+  color: #634DB8;
+  text-decoration: none;
+}
+.login-container a:hover {
+  text-decoration: underline;
+}
+/*** REGISTER STYLES ***/
+.register-container {
+  max-width: 300px;
+  margin: 50px auto;
+  padding: 2rem;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.10);
+}
+
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0,4rem;
+}
+
+.register-form input {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.register-form button {
+  padding: 0.75rem;
+  background-color: #f87a20;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.register-form button:hover {
+  background-color: #2DD4BF;
+}
+
+.register-container h2 {
+  color: #634DB8;
+  margin-bottom: 1rem;
+}
+
+.register-container p {
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.register-container a {
+  color: #634DB8;
+  text-decoration: none;
+} 
+
+.register-container a:hover {
+  text-decoration: underline;
+}
+
