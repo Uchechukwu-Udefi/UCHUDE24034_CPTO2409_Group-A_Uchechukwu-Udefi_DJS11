@@ -165,6 +165,38 @@ footer {
   transform: translate(1px, 1px);
 }
 
+/*** LOADING SPINNER ***/
+.loading-spinner {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100px;
+  height: 100px;
+  background-color: #161616;
+  border-radius: 50%;
+  padding: 20px;
+  animation: swing 1s ease-in-out infinite, colorChange 1s linear infinite;
+}
+
+/* Rotate back and forth (like a pendulum) */
+@keyframes swing {
+  0%   { transform: translate(-50%, -50%) rotate(-30deg); }
+  50%  { transform: translate(-50%, -50%) rotate(30deg); }
+  100% { transform: translate(-50%, -50%) rotate(-30deg); }
+}
+
+/* Cycle through background colors */
+@keyframes colorChange {
+  0%   { background-color: #161616; }
+  25%  { background-color: #1e3a8a; } /* blue */
+  50%  { background-color: #10b981; } /* green */
+  75%  { background-color: #f59e0b; } /* amber */
+  100% { background-color: #161616; }
+}
+
+
+
 /*** HOME PAGE ***/
 .home-container {
   padding: 45px 23px;

@@ -2,6 +2,7 @@ import { Link } from "react-router-dom"
 import { useEffect, useState } from 'react';
 import { fetchPreviews } from '/server';
 import GenreList from "../genre/GenreList";
+import Loading from "../../components/LoadingSpinner";
 
 export default function ShowList() {
 
@@ -20,7 +21,7 @@ export default function ShowList() {
         loadHomeData();
       }, []);
 
-    if (previews.length === 0) return <p>Loading shows...</p>;
+    if (previews.length === 0) return <Loading />;
 
     return(
         <div className="show-list">
