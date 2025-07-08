@@ -61,29 +61,29 @@ export default function Search() {
       />
 
       {loading && <Loading />}
-      {error && <p className="error-text">{error}</p>}
+      {error && <p className="search-error-text">{error}</p>}
 
       {results.length > 0 && (
         <>
-          <div className="genres-section">
+          <div className="search-genres-section">
             <h2>Genres Found in Results</h2>
-            <div className="genre-list">
+            <div className="search-genre-list">
               {resultGenres.map((genreId) => (
-                <Link to={`/genre/${genreId}`} key={genreId} className="genre-tag">
+                <Link to={`/genre/${genreId}`} key={genreId} className="search-genre-tag">
                   {genreMap[genreId]}
                 </Link>
               ))}
             </div>
           </div>
 
-          <div className="results-section">
+          <div className="search-results-section">
             <h2>Search Results</h2>
             {results.map((show) => (
-              <Link to={`/shows/${show.id}`} key={show.id} className="show-item">
-                <img src={show.image} alt={show.title} className="show-image" />
-                <div className="show-details">
-                  <div className="show-title">{show.title}</div>
-                  <div className="show-genres">
+              <Link to={`/shows/${show.id}`} key={show.id} className="search-show-item">
+                <img src={show.image} alt={show.title} className="search-show-image" />
+                <div className="search-show-details">
+                  <div className="search-show-title">{show.title}</div>
+                  <div className="search-show-genres">
                     Genres: {(show.genres || []).map(id => genreMap[id]).join(', ')}
                   </div>
                 </div>
@@ -94,7 +94,7 @@ export default function Search() {
       )}
 
       {query.trim() !== '' && !loading && results.length === 0 && (
-        <p className="no-results">
+        <p className="search-no-results">
           No results found for <strong>{query}</strong>.
         </p>
       )}

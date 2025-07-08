@@ -400,16 +400,17 @@ footer {
 
 /*** SHOW GENRE PAGES ***/
 
+
 .genre-container {
   position: sticky;
-  top: 0; /* or any other offset from the top */
+  top: 0;
   padding: 20px;
   width: 100%;
   background-color: #634DB8;
   color: white;
   border-radius: 10px;
   box-shadow: 0 4px 6px -2px rgba(0, 0, 0, 0.3);
-  z-index: 1000; /* optional: ensures it stays above other content */
+  z-index: 1000;
 }
 
 .genre-container h1 {
@@ -423,38 +424,6 @@ footer {
   gap: 16px;
   justify-content: center;
 }
-
-.genre-list-link {
-  padding: 10px 16px;
-  border-radius: 8px;
-  text-decoration: none;
-  color: #ddd;
-  white-space: nowrap;
-  transition: background-color 0.3s;
-}
-
-.genre-list-link:hover {
-  background-color: #ddd;
-}
-
-/* Responsive: turn into horizontal scroll on small screens */
-@media (max-width: 768px) {
-  .genre-list {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    overflow-y: hidden;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    padding-bottom: 10px;
-    justify-content: flex-start;
-  }
-
-  .genre-list-link {
-    flex: 0 0 auto;
-    scroll-snap-align: start;
-  }
-}
-
 
 .genre-list-link {
   flex: 1 1 200px;
@@ -478,6 +447,36 @@ footer {
   font-size: 2rem;
   font-weight: 600;
 }
+
+/* Responsive: force horizontal scroll on mobile */
+@media (max-width: 768px) {
+  .genre-list {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 10px;
+    justify-content: flex-start;
+  }
+
+  .genre-list-link {
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+  }
+
+  /* Optional scrollbar hiding */
+  .genre-list::-webkit-scrollbar {
+    display: none;
+  }
+
+  .genre-list {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+
 
 .show-genre-list-item {
   display: flex;
@@ -631,20 +630,20 @@ footer {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
-.error-text {
+.search-error-text {
   color: red;
 }
 
-.genres-section {
+.search-genres-section {
   margin-top: 2rem;
 }
 
-.genre-list {
+.search-genre-list {
   display: flex;
   flex-wrap: wrap;
 }
 
-.genre-tag {
+.search-genre-tag {
   margin-right: 1rem;
   display: inline-block;
   text-decoration: none;
@@ -655,11 +654,11 @@ footer {
   background: #f9f9f9;
 }
 
-.results-section {
+.search-results-section {
   margin-top: 1.5rem;
 }
 
-.show-item {
+.search-show-item {
   display: flex;
   align-items: center;
   margin-bottom: 1rem;
@@ -667,25 +666,25 @@ footer {
   color: #000;
 }
 
-.show-image {
+.search-show-image {
   width: 100px;
   border-radius: 5px;
 }
 
-.show-details {
+.search-show-details {
   margin-left: 1rem;
 }
 
-.show-title {
+.search-show-title {
   font-weight: bold;
 }
 
-.show-genres {
+.search-show-genres {
   font-size: 0.9rem;
   color: #666;
 }
 
-.no-results {
+.search-no-results {
   margin-top: 2rem;
   color: #666;
   font-style: italic;
