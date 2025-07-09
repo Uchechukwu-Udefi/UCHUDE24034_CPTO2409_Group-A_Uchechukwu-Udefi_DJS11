@@ -1,6 +1,8 @@
 import { Link, NavLink } from "react-router-dom"
 import { useState } from "react";
 import { FaRegUserCircle } from "react-icons/fa";
+import { FaRegWindowClose } from "react-icons/fa";
+import { GiHamburgerMenu } from "react-icons/gi";
 
 export default function Header() {
 
@@ -20,8 +22,9 @@ export default function Header() {
         <header>
                 <Link className="site-link" to="/"><img src="/u-tune_logo_1.png" alt="Logo 1" className="site-logo"/></Link>
                 <Link className="site-title" to="/"><img src="/u-tune_logo_2.png" alt="Logo 2" className="site-title"/></Link>
-                <button className="hamburger" onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? '×' : '☰'}</button>
+                <button className="hamburger" onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <FaRegWindowClose /> : <GiHamburgerMenu />}</button>
                 <nav className={menuOpen ? 'open' : ''}>
+                    <NavLink to="/" end style={ ({isActive}) => isActive ? activeStyles : null } onClick={handleLinkClick}>🏠 Home</NavLink>
                     <NavLink to="/favouriteshows"  style={ ({isActive}) => isActive ? activeStyles : null } onClick={handleLinkClick}>❤️ Favourites</NavLink>
                     <NavLink to="/shows" end style={ ({isActive}) => isActive ? activeStyles : null } onClick={handleLinkClick}>🌐 Explore</NavLink>
                     <NavLink to="/search" style={ ({isActive}) => isActive? activeStyles : null } onClick={handleLinkClick}>🔍 Search</NavLink>
