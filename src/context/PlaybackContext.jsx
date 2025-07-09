@@ -75,6 +75,7 @@ export function PlaybackProvider({ children }) {
     <PlaybackContext.Provider
       value={{
         currentEpisode,
+        setCurrentEpisode,
         playShow,
         audioRef,
         history,

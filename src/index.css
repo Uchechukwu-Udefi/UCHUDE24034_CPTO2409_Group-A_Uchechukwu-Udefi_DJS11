@@ -547,6 +547,89 @@ footer {
   transition: background-color 0.3s ease;
 }
 
+/*** EPISODE PLAYER ***/
+.episode-player {
+  padding: 1rem;
+  padding-bottom: 4rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.episode-player__image {
+  width: 200px;
+  border-radius: 4px;
+}
+
+.episode-player__title {
+  margin: 1rem 0 0.5rem;
+  font-size: 1.5rem;
+}
+
+.episode-player__subtitle {
+  margin: 0 0 1rem;
+  font-size: 1.2rem;
+  color: #555;
+}
+
+.episode-player__description {
+  font-size: 1rem;
+  line-height: 1.4;
+  margin-bottom: 2rem;
+}
+
+.episode-player__controls {
+  border: 1px solid #ccc;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.episode-player__buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.episode-player__button {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.episode-player__button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.episode-player__seekbar {
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+
+.episode-player__time {
+  text-align: center;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.episode-player__volume {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.episode-player__volume-slider {
+  width: 100px;
+}
+
 /*** GLOBAL PLAYER ***/
 
 .global-player {
@@ -600,10 +683,23 @@ footer {
   gap: 0.5rem;
 }
 
-.global-player__open-btn {
-  align-self: flex-end;
-  padding: 0.25rem 0.5rem;
+.global-player-util-buttons {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
+
+.global-player-open-btn, .global-player-close-btn {
+  background-color: #f87a20;
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
 
 /* Responsive layout */
 @media (max-width: 768px) {
@@ -612,7 +708,13 @@ footer {
     padding: 0.5rem;
   }
 
-  .global-player__open-btn {
+  .global-player-util-buttons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .global-player-open-btn, .global-player-close-btn {
     font-size: 0.85rem;
   }
 }

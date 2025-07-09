@@ -105,32 +105,38 @@ export default function EpisodePlayer() {
     isNaN(s) ? "--:--" : new Date(s * 1000).toISOString().substr(14, 5);
 
   return (
-    <div style={{ padding: "1rem", paddingBottom: "4rem" }}>
-      <img src={episode.seasonImage} alt="" style={{ width: "200px" }} />
-      <h1>{episode.showTitle} - Season {episode.seasonNumber}</h1>
-      <h2>Episode: {episodeId} - {episode.title}</h2>
-      <p>{episode.description}</p>
+    <div className="episode-player">
+      <img src={episode.seasonImage} alt={`Cover for ${episode.showTitle}`} className="episode-player__image" />
+      
+      <h1 className="episode-player__title">
+        {episode.showTitle} - Season {episode.seasonNumber}
+      </h1>
+      
+      <h2 className="episode-player__subtitle">
+        Episode {episodeId}: {episode.title}
+      </h2>
+      
+      <p className="episode-player__description">{episode.description}</p>
 
-      <button onClick={() => navigate(`/shows/${id}/season/${seasonNumber}`)} className="back-button">
-        ← Back to Season
-      </button>
-
-      <div style={{
-        marginTop: "2rem",
-        padding: "1rem",
-        background: "#eee",
-        borderRadius: "8px"
-      }}>
-        <div style={{ marginBottom: "0.5rem" }}>
-          <button onClick={() => goToEpisode(episodeIndex - 1)} disabled={episodeIndex <= 0}>
+      <div className="episode-player__controls">
+        <div className="episode-player__buttons">
+          <button
+            onClick={() => goToEpisode(episodeIndex - 1)}
+            disabled={episodeIndex <= 0}
+            className="episode-player__button"
+          >
             ⏮ Prev
           </button>
 
-          <button onClick={togglePlayback} style={{ margin: "0 1rem" }}>
+          <button onClick={togglePlayback} className="episode-player__button">
             {isPlaying ? "⏸ Pause" : "▶ Play"}
           </button>
 
-          <button onClick={() => goToEpisode(episodeIndex + 1)} disabled={episodeIndex >= seasonEpisodes.length - 1}>
+          <button
+            onClick={() => goToEpisode(episodeIndex + 1)}
+            disabled={episodeIndex >= seasonEpisodes.length - 1}
+            className="episode-player__button"
+          >
             Next ⏭
           </button>
         </div>
@@ -141,25 +147,34 @@ export default function EpisodePlayer() {
           max="100"
           value={duration ? (progress / duration) * 100 : 0}
           onChange={seek}
-          style={{ width: "80%" }}
+          className="episode-player__seekbar"
         />
-        <div>
+
+        <div className="episode-player__time">
           {formattedTime(progress)} / {formattedTime(duration)}
         </div>
 
-        <div style={{ marginTop: "0.5rem" }}>
-          Volume:
+        <div className="episode-player__volume">
+          <label htmlFor="volume">Volume:</label>
           <input
+            id="volume"
             type="range"
             min="0"
             max="1"
             step="0.01"
             value={volume}
             onChange={handleVolumeChange}
-            style={{ width: "100px", marginLeft: "1rem" }}
+            className="player__volume-slider"
           />
         </div>
       </div>
+
+      <button
+        onClick={() => navigate(`/shows/${id}/season/${seasonNumber}`)}
+        className="back-button"
+      >
+        ← Back to Season
+      </button>
     </div>
   );
 }

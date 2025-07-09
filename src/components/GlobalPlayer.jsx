@@ -3,7 +3,7 @@ import { usePlayback } from "../context/PlaybackContext";
 import { useNavigate, useLocation } from "react-router-dom";
 
 export default function GlobalPlayer() {
-  const { currentEpisode, audioRef } = usePlayback();
+  const { currentEpisode, setCurrentEpisode, audioRef } = usePlayback();
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const [volume, setVolume] = useState(1);
@@ -47,6 +47,20 @@ export default function GlobalPlayer() {
     setVolume(value);
     if (audioRef.current) audioRef.current.volume = value;
   };
+
+  const closePlayer = () => {
+  const audio = audioRef.current;
+  if (audio) {
+    audio.pause();
+    audio.currentTime = 0;
+  }
+  setIsPlaying(false);
+  setIsExpanded(false);
+
+  if (typeof setCurrentEpisode === "function") {
+    setCurrentEpisode(null);
+  }
+};
 
   const seek = (e) => {
     const audio = audioRef.current;
@@ -111,15 +125,20 @@ export default function GlobalPlayer() {
               onChange={handleVolumeChange}
             />
           </div>
-
+          <div className="global-player-util-buttons">
           <button
             onClick={() =>
               navigate(`/shows/${currentEpisode.showId}/season/${currentEpisode.seasonNumber}/episode/${currentEpisode.episode}`)
             }
-            className="global-player__open-btn"
+            className="global-player-open-btn"
           >
             Open Full Player 🎧
           </button>
+
+          <button onClick={closePlayer} className="global-player-close-btn" title="Close Player">
+            ❌
+          </button>
+          </div>
         </div>
       )}
     </div>
