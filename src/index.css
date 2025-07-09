@@ -150,19 +150,29 @@ footer {
   transition: transform 0.1s ease-in-out;
 }
 
-.back-button {
-  display: block;
-  color: black;
-  text-decoration: none;
-  margin-left: 26px;
-}
-
-.back-button span:hover {
-  text-decoration: underline;
-}
-
 .link-button:hover {
   transform: translate(1px, 1px);
+}
+
+.back-button {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #f87a20;
+  color: white;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.10);
+  font-size: 1rem;
+  border: none;
+}
+
+.back-button:hover {
+  background-color: #2DD4BF;
+  text-decoration: none;
+  transform: translateY(-2px);
 }
 
 /*** LOADING SPINNER ***/
@@ -322,9 +332,7 @@ footer {
 .show-list h2 {
   font-weight: 700;
   font-size: 2.25rem;
-  line-height: 42px;
   text-align: center;
-  padding: 10px;
 }
 
 .show-list-item {
@@ -332,7 +340,7 @@ footer {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: 16px;
+  padding: 5px;
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   width: 200px;
@@ -343,6 +351,16 @@ footer {
   height: 120px;
   object-fit: cover;
   border-radius: 10px;
+}
+
+.show-list-item a {
+  text-decoration: none;
+  color: #ccc;
+  font-weight: 600;
+  margin-top: 20px;
+  background-color: #634DB8;
+  padding: 10px 20px;
+  border-radius: 5px;
 }
 
 @media (max-width: 768px) {
@@ -475,8 +493,6 @@ footer {
     scrollbar-width: none;
   }
 }
-
-
 
 .show-genre-list-item {
   display: flex;

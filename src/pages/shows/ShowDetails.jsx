@@ -47,7 +47,7 @@ export default function ShowPage() {
 ))}
 
       </div>
-      <button onClick={() => navigate("/shows")}>← Back to Genres</button>
+      <button onClick={() => navigate("/shows")} className="back-button">← Back to Genres</button>
     </div>
   );
 }

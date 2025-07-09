@@ -43,6 +43,7 @@ export default function Favorites() {
                   onClick={() =>
                     navigate(`/shows/${ep.showId || ep.id}/season/${ep.seasonNumber}/episode/${ep.episode}`)
                   }
+                  className="back-button"
                 >
                   ▶ Play
                 </button>

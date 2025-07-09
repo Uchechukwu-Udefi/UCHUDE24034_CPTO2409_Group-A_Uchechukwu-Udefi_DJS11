@@ -111,7 +111,7 @@ export default function EpisodePlayer() {
       <h2>Episode: {episodeId} - {episode.title}</h2>
       <p>{episode.description}</p>
 
-      <button onClick={() => navigate(`/shows/${id}/season/${seasonNumber}`)}>
+      <button onClick={() => navigate(`/shows/${id}/season/${seasonNumber}`)} className="back-button">
         ← Back to Season
       </button>
 

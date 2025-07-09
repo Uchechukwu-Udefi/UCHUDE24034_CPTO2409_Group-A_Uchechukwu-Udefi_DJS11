@@ -68,7 +68,7 @@ export default function Genre() {
         )}
       </div>
 
-      <button onClick={() => navigate("/")}>← Back to Genres</button>
+      <button onClick={() => navigate("/")} className="back-button">← Back to Genres</button>
     </div>
   );
 }

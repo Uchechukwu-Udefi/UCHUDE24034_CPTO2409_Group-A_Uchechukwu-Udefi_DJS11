@@ -41,7 +41,8 @@ export default function ShowList() {
                   <div key={preview.id} className="show-list-item">
                     <img src={preview.image} alt={preview.title} />
                     <h3>{preview.title}</h3>
-                    <Link to={`/shows/${preview.id}`}>View Details</Link>
+                    <strong>{preview.seasons} Seasons</strong>
+                    <Link to={`/shows/${preview.id}`}>View More Details</Link>
                   </div>
               ))}
             </div>

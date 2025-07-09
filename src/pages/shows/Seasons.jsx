@@ -45,7 +45,7 @@ export default function Season() {
         </div>
       ))}
 
-      <button onClick={() => navigate(`/shows/${id}`)}>← Back to Show</button>
+      <button onClick={() => navigate(`/shows/${id}`)} className="back-button">← Back to Show</button>
     </div>
   );
 }
