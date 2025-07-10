@@ -1,17 +1,15 @@
-// pages/History.js
 import { usePlayback } from "../../context/PlaybackContext";
 import { useNavigate } from "react-router-dom";
 
 export default function Favorites() {
-
-  const { history } = usePlayback();
+  const { favorites, removeFavorite } = usePlayback();
   const navigate = useNavigate();
 
-  // Limit to 5 most recent
-  const recent = history.slice(0, 5);
+  if (favorites.length === 0) {
+    return <div className="favorite-container"><h1>Favorites</h1><p>No favorites added.</p></div>;
+  }
 
-  // Group by show and season
-  const grouped = recent.reduce((acc, ep) => {
+  const grouped = favorites.reduce((acc, ep) => {
     const key = `${ep.showTitle} - Season ${ep.seasonNumber}`;
     if (!acc[key]) acc[key] = [];
     acc[key].push(ep);
@@ -20,9 +18,7 @@ export default function Favorites() {
 
   return (
     <div className="favorite-container">
-      <h1>Recently Played</h1>
-      {Object.entries(grouped).length === 0 && <p>No recent plays.</p>}
-
+      <h1>Favorites</h1>
       {Object.entries(grouped).map(([seasonKey, episodes]) => (
         <div key={seasonKey} className="favorite-season-group">
           <h2>{seasonKey}</h2>
@@ -41,11 +37,17 @@ export default function Favorites() {
                 </div>
                 <button
                   onClick={() =>
-                    navigate(`/shows/${ep.showId || ep.id}/season/${ep.seasonNumber}/episode/${ep.episode}`)
+                    navigate(`/shows/${ep.showId}/season/${ep.seasonNumber}/episode/${ep.episode}`)
                   }
                   className="favorite-play-button"
                 >
                   ▶ Play
+                </button>
+                <button
+                  onClick={() => removeFavorite(ep._key)}
+                  className="favorite-remove-button"
+                >
+                  ✖ Remove
                 </button>
               </li>
             ))}

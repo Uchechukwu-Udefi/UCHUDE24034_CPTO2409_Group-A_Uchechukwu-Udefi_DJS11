@@ -16,6 +16,7 @@ export function PlaybackProvider({ children }) {
   const [currentEpisode, setCurrentEpisode] = useState(null);
   const [seasonEpisodes, setSeasonEpisodes] = useState([]);
   const [history, setHistory] = useState([]);
+  const [favorites, setFavorites] = useState([]);
   const audioRef = useRef(null);
   const location = useLocation();
 
@@ -71,6 +72,21 @@ export function PlaybackProvider({ children }) {
     setSeasonEpisodes(episodes);
   };
 
+  // 🗂️ Load favorites from localStorage
+
+  const toggleFavorite = (episode) => {
+    setFavorites(prev => {
+      const exists = prev.some(fav => fav._key === episode._key);
+      return exists
+        ? prev.filter(fav => fav._key !== episode._key)
+        : [episode, ...prev];
+    });
+  };
+
+  const removeFavorite = (key) => {
+    setFavorites(prev => prev.filter(fav => fav._key !== key));
+  };
+
   return (
     <PlaybackContext.Provider
       value={{
@@ -81,6 +97,9 @@ export function PlaybackProvider({ children }) {
         history,
         seasonEpisodes,
         loadSeason,
+        favorites,
+        toggleFavorite,
+        removeFavorite
       }}
     >
       {children}

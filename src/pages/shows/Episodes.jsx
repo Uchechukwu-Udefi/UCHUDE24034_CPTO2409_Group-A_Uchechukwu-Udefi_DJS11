@@ -13,10 +13,19 @@ export default function EpisodePlayer() {
   const [progress, setProgress] = useState(0);
   const [volume, setVolume] = useState(1);
 
-  const { playShow, audioRef, loadSeason, seasonEpisodes } = usePlayback();
+  const {
+    playShow,
+    audioRef,
+    loadSeason,
+    seasonEpisodes,
+    favorites,
+    toggleFavorite,
+  } = usePlayback();
+
   const episodeIndex = Number(episodeId) - 1;
 
-  // Fetch episode + season data
+  const isFavorite = episode && favorites.some(fav => fav._key === episode._key);
+
   useEffect(() => {
     async function fetchEpisode() {
       try {
@@ -32,6 +41,7 @@ export default function EpisodePlayer() {
 
         const enriched = {
           ...ep,
+          _key: `${show.id}-${season.season}-${ep.episode || ep.id}`,
           showId: show.id,
           showTitle: show.title,
           seasonNumber: season.season,
@@ -167,6 +177,10 @@ export default function EpisodePlayer() {
             onChange={handleVolumeChange}
             className="player__volume-slider"
           />
+
+          <button onClick={() => toggleFavorite(episode)} className="favorite-button">
+            {isFavorite ? "★ Remove Favorite" : "☆ Add to Favorites"}
+          </button>
         </div>
       </div>
 

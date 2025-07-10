@@ -896,10 +896,7 @@ footer {
   padding: 0.5rem;
   border-radius: 6px;
   transition: background 0.2s ease-in-out;
-}
-
-.favorite-episode-item:hover {
-  background: #ccc;
+  gap: 12px;
 }
 
 .favorite-episode-image {
@@ -917,6 +914,38 @@ footer {
 
 .favorite-play-button {
   background-color: #f87a20;
+  color: white;
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.favorite-play-button:hover {
+  background-color: #2DD4BF;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.favorite-remove-button {
+  background-color: #d62839;
+  color: white;
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.favorite-remove-button:hover {
+  background-color: #ff0015;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.favorite-button {
+  background-color: #634DB8;
   color: white;
   border: none;
   padding: 0.4rem 0.8rem;
