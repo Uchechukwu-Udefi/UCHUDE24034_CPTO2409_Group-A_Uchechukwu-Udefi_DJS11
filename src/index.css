@@ -416,7 +416,6 @@ footer {
 
 /*** SHOW GENRE PAGES ***/
 .genre-container {
-  position: sticky;
   top: 0;
   padding: 20px;
   width: 100%;
