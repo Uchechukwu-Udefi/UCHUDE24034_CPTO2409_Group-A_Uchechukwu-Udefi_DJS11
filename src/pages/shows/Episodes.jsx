@@ -4,6 +4,7 @@ import { fetchShowById } from "/server";
 import { usePlayback } from "../../context/PlaybackContext";
 import { IoIosArrowBack } from "react-icons/io";
 import { FaStar, FaRegStar } from "react-icons/fa";
+import Loading from "../../components/LoadingSpinner";
 
 export default function EpisodePlayer() {
   const { id, seasonNumber, episodeId } = useParams();
@@ -108,7 +109,7 @@ export default function EpisodePlayer() {
     navigate(`/shows/${id}/season/${seasonNumber}/episode/${index + 1}`);
   };
 
-  if (!episode) return <div>Loading episode...</div>;
+  if (!episode) return <Loading />;
 
   const audio = audioRef.current;
   const duration = audio?.duration || 0;

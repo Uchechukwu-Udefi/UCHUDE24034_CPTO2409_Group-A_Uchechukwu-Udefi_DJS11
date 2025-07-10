@@ -41,7 +41,10 @@ function HistoryPage() {
                   alignItems: "center",
                   flexWrap: "wrap",
                 }}
-              >
+              > 
+                <div style={{ flex: "1 1 10%", display: "flex", alignItems: "center" }}>
+                  <img src={episode.seasonImage} alt={`Cover for ${episode.title}`} style={{ width: "100px", borderRadius: "4px" }} />
+                </div>
                 <div style={{ flex: "1 1 70%" }}>
                   <strong>{episode.title}</strong>
                   <br />
