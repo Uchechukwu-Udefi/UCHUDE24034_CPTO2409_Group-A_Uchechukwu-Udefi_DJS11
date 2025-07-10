@@ -40,7 +40,7 @@ export default function Header() {
     return (
         <header>
             <Link className="site-link" to="/">
-                <img src="/u-tune_logo_1.png" alt="Logo 1" className="site-logo" />
+                <img src="/favicon.svg" alt="Logo 1" className="site-logo" />
             </Link>
             <Link className="site-title" to="/">
                 <img src="/u-tune_logo_2.png" alt="Logo 2" className="site-title" />
