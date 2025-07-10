@@ -13,6 +13,7 @@ import GlobalPlayer from './components/GlobalPlayer.jsx';
 import Search from './components/Search.jsx';
 import Login from './components/Login.jsx';
 import Register from './components/Register.jsx';
+import History from './pages/History.jsx';
 
 
 
@@ -32,8 +33,8 @@ function App() {
         <Route path="/shows/:id/season/:seasonNumber" element={<Season />} />
         <Route path="/shows/:id/season/:seasonNumber/episode/:episodeId" element={<EpisodePlayer />} />
 
-
-        <Route path='/favouriteshows' element={<Favorites />} />
+        <Route path='/history' element={<History />} />
+        <Route path='/favourites' element={<Favorites />} />
         
         <Route path="/genre" element={<GenreList />} />
         <Route path="/genre/:genreId" element={<Genre />} />

@@ -49,9 +49,9 @@ export default function Header() {
                 {menuOpen ? <FaRegWindowClose /> : <GiHamburgerMenu />}
             </button>
             <nav ref={menuRef} className={menuOpen ? 'open' : ''}>
-                <NavLink to="/" end style={({ isActive }) => isActive ? activeStyles : null} onClick={handleLinkClick}>🏠 Home</NavLink>
-                <NavLink to="/favouriteshows" style={({ isActive }) => isActive ? activeStyles : null} onClick={handleLinkClick}>❤️ Favourites</NavLink>
                 <NavLink to="/shows" end style={({ isActive }) => isActive ? activeStyles : null} onClick={handleLinkClick}>🌐 Explore</NavLink>
+                <NavLink to="/history" end style={({ isActive }) => isActive ? activeStyles : null} onClick={handleLinkClick}>🧭 History</NavLink>
+                <NavLink to="/favourites" style={({ isActive }) => isActive ? activeStyles : null} onClick={handleLinkClick}>❤️ Favourites</NavLink>
                 <NavLink to="/search" style={({ isActive }) => isActive ? activeStyles : null} onClick={handleLinkClick}>🔍 Search</NavLink>
                 <Link to="/login" className="login-link" onClick={handleLinkClick}>
                     <FaRegUserCircle />

@@ -11,30 +11,32 @@ import GlobalPlayer from "../components/GlobalPlayer.jsx";
 // Create Context
 const PlaybackContext = createContext();
 
-// Playback Provider
 export function PlaybackProvider({ children }) {
   const [currentEpisode, setCurrentEpisode] = useState(null);
   const [seasonEpisodes, setSeasonEpisodes] = useState([]);
   const [history, setHistory] = useState([]);
   const [favorites, setFavorites] = useState([]);
   const [completedEpisodes, setCompletedEpisodes] = useState([]);
+  const [progressMap, setProgressMap] = useState({}); // Track progress %
   const audioRef = useRef(null);
   const location = useLocation();
 
   const isEpisodePlayerPage = /^\/shows\/[^/]+\/season\/[^/]+\/episode\/[^/]+$/.test(location.pathname);
 
-  // 📦 Load from localStorage on mount
+  // Load from localStorage on mount
   useEffect(() => {
     const savedHistory = JSON.parse(localStorage.getItem("playbackHistory")) || [];
     const savedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
     const savedCompleted = JSON.parse(localStorage.getItem("completedEpisodes")) || [];
+    const savedProgress = JSON.parse(localStorage.getItem("episodeProgress")) || {};
 
     setHistory(savedHistory);
     setFavorites(savedFavorites);
     setCompletedEpisodes(savedCompleted);
+    setProgressMap(savedProgress);
   }, []);
 
-  // 💾 Persist state to localStorage when updated
+  // Persist to localStorage when updated
   useEffect(() => {
     localStorage.setItem("playbackHistory", JSON.stringify(history));
   }, [history]);
@@ -47,7 +49,11 @@ export function PlaybackProvider({ children }) {
     localStorage.setItem("completedEpisodes", JSON.stringify(completedEpisodes));
   }, [completedEpisodes]);
 
-  // 🔁 Update audio source when episode changes
+  useEffect(() => {
+    localStorage.setItem("episodeProgress", JSON.stringify(progressMap));
+  }, [progressMap]);
+
+  // Update audio source when currentEpisode changes
   useEffect(() => {
     if (currentEpisode?.audioUrl && audioRef.current) {
       const audio = audioRef.current;
@@ -57,7 +63,45 @@ export function PlaybackProvider({ children }) {
     }
   }, [currentEpisode]);
 
-  // ▶️ Play an episode
+  // Update progress during playback
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio || !currentEpisode?._key) return;
+
+    const handleTimeUpdate = () => {
+      const percent = (audio.currentTime / audio.duration) * 100;
+      if (!isNaN(percent)) {
+        setProgressMap((prev) => ({
+          ...prev,
+          [currentEpisode._key]: Math.min(Math.round(percent), 100),
+        }));
+      }
+    };
+
+    audio.addEventListener("timeupdate", handleTimeUpdate);
+    return () => {
+      audio.removeEventListener("timeupdate", handleTimeUpdate);
+    };
+  }, [currentEpisode]);
+
+  // Mark episode as completed when playback ends
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    const handleEnded = () => {
+      if (currentEpisode?._key && !completedEpisodes.includes(currentEpisode._key)) {
+        setCompletedEpisodes((prev) => [...prev, currentEpisode._key]);
+      }
+    };
+
+    audio.addEventListener("ended", handleEnded);
+    return () => {
+      audio.removeEventListener("ended", handleEnded);
+    };
+  }, [currentEpisode, completedEpisodes]);
+
+  // Play an episode
   const playShow = (episode) => {
     if (!episode) return;
 
@@ -77,12 +121,12 @@ export function PlaybackProvider({ children }) {
     });
   };
 
-  // 🧭 Load season data
+  // Load season data
   const loadSeason = (episodes) => {
     setSeasonEpisodes(episodes);
   };
 
-  // ⭐ Toggle favorite
+  // Toggle favorite
   const toggleFavorite = (episode) => {
     const episodeKey = episode._key || `${episode.showId || episode.id}-${episode.seasonNumber}-${episode.episode}`;
     const enriched = { ...episode, _key: episodeKey, addedAt: new Date().toISOString() };
@@ -97,22 +141,16 @@ export function PlaybackProvider({ children }) {
     setFavorites((prev) => prev.filter((fav) => fav._key !== key));
   };
 
-  // ✅ Track when audio finishes
-  useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio) return;
+  // Reset listening progress and history
+  const resetProgress = () => {
+    setHistory([]);
+    setCompletedEpisodes([]);
+    setProgressMap({});
 
-    const handleEnded = () => {
-      if (currentEpisode?._key && !completedEpisodes.includes(currentEpisode._key)) {
-        setCompletedEpisodes((prev) => [...prev, currentEpisode._key]);
-      }
-    };
-
-    audio.addEventListener("ended", handleEnded);
-    return () => {
-      audio.removeEventListener("ended", handleEnded);
-    };
-  }, [currentEpisode, completedEpisodes]);
+    localStorage.removeItem("playbackHistory");
+    localStorage.removeItem("completedEpisodes");
+    localStorage.removeItem("episodeProgress");
+  };
 
   return (
     <PlaybackContext.Provider
@@ -128,6 +166,8 @@ export function PlaybackProvider({ children }) {
         toggleFavorite,
         removeFavorite,
         completedEpisodes,
+        progressMap,
+        resetProgress,
       }}
     >
       {children}
