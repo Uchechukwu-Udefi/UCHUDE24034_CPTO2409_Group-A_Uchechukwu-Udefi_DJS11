@@ -77,9 +77,15 @@ export function PlaybackProvider({ children }) {
   const toggleFavorite = (episode) => {
     setFavorites(prev => {
       const exists = prev.some(fav => fav._key === episode._key);
-      return exists
-        ? prev.filter(fav => fav._key !== episode._key)
-        : [episode, ...prev];
+      if (exists) {
+        return prev.filter(fav => fav._key !== episode._key);
+      } else {
+        const enriched = {
+          ...episode,
+          addedAt: new Date().toISOString(), // Save timestamp
+        };
+        return [enriched, ...prev];
+      }
     });
   };
 

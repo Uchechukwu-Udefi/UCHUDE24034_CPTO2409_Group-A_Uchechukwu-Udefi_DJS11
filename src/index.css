@@ -955,6 +955,13 @@ footer {
   transition: background-color 0.2s ease-in-out;
 }
 
+.favorite-sort {
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
 
 /*** LOGIN STYLES ***/
 .login-container {
