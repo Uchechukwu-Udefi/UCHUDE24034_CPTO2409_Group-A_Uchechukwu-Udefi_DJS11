@@ -60,6 +60,7 @@ export default function Genre() {
                 <div key={show.id} className="show-genre-list-item">
                     <img src={show.image} alt={show.title} />
                 <strong>{show.title}</strong> 
+                <strong>{show.seasons.length} Seasons</strong>
                 <Link to={`/shows/${show.id}`}>View Details</Link>
                 </div>
             ))}

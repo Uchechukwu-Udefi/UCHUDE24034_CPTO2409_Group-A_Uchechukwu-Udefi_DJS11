@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { usePlayback } from "../context/PlaybackContext";
 import { useNavigate, useLocation } from "react-router-dom";
+import { FaRegWindowClose } from "react-icons/fa";
 
 export default function GlobalPlayer() {
   const { currentEpisode, setCurrentEpisode, audioRef } = usePlayback();
@@ -134,9 +135,11 @@ export default function GlobalPlayer() {
           >
             Open Full Player 🎧
           </button>
-
-          <button onClick={closePlayer} className="global-player-close-btn" title="Close Player">
-            ❌
+          
+          <button onClick={closePlayer} className="global-player-close-btn" title="Close Player" {
+            ...(window.confirm("Are you sure you want to close and stop the player?") ? null : { "aria-label": "Close Player" }
+            )}>
+            <FaRegWindowClose />
           </button>
           </div>
         </div>

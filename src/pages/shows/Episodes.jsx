@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { fetchShowById } from "/server";
 import { usePlayback } from "../../context/PlaybackContext";
 import { IoIosArrowBack } from "react-icons/io";
+import { FaStar, FaRegStar } from "react-icons/fa";
 
 export default function EpisodePlayer() {
   const { id, seasonNumber, episodeId } = useParams();
@@ -179,7 +180,7 @@ export default function EpisodePlayer() {
           />
 
           <button onClick={() => toggleFavorite(episode)} className="favorite-button">
-            {isFavorite ? "★ Remove Favorite" : "☆ Add to Favorites"}
+            {isFavorite ? <FaStar /> : <FaRegStar />}
           </button>
         </div>
       </div>
