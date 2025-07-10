@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { fetchPreviews, fetchShowById, genreMap } from "/server";
 import Loading from "../../components/LoadingSpinner";
+import { IoIosArrowBack } from "react-icons/io";
 
 export default function Genre() {
   const navigate = useNavigate();
@@ -68,7 +69,7 @@ export default function Genre() {
         )}
       </div>
 
-      <button onClick={() => navigate("/")} className="back-button">← Back to Genres</button>
+      <button onClick={() => navigate("/")} className="back-button"><IoIosArrowBack /></button>
     </div>
   );
 }

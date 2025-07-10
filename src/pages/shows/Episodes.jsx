@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { fetchShowById } from "/server"; // Adjust path if needed
+import { fetchShowById } from "/server";
 import { usePlayback } from "../../context/PlaybackContext";
+import { IoIosArrowBack } from "react-icons/io";
 
 export default function EpisodePlayer() {
   const { id, seasonNumber, episodeId } = useParams();
@@ -173,7 +174,7 @@ export default function EpisodePlayer() {
         onClick={() => navigate(`/shows/${id}/season/${seasonNumber}`)}
         className="back-button"
       >
-        ← Back to Season
+        <IoIosArrowBack />
       </button>
     </div>
   );

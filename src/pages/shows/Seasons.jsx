@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { fetchShowById } from '/server';
 import Loading from '../../components/LoadingSpinner';
+import { IoIosArrowBack } from "react-icons/io";
 
 export default function Season() {
   const { id, seasonNumber } = useParams();
@@ -30,22 +31,30 @@ export default function Season() {
   if (!seasonData) return <Loading />;
 
   return (
-    <div style={{ padding: '1rem' }}>
-      <h1>{seasonData.title} - Season {seasonData.season.season}</h1>
-      <img src={seasonData.season.image} alt={`Season ${seasonData.season.season}`} style={{ width: '200px' }} />
+    <div className="season-episode-container">
+      <h1>{seasonData.title}</h1>
+      <h1>Season {seasonData.season.season}</h1>
+      <img
+        src={seasonData.season.image}
+        alt={`Season ${seasonData.season.season}`}
+        className="season-episode-image"
+      />
 
-      <h2>Episodes</h2>
-      {seasonData.season.episodes.map((episode, index) => (
-        <div key={episode.id} style={{ marginBottom: '10px' }}>
-            <strong>Episode: {index + 1}</strong><br />
-          <strong>{episode.title}</strong><br />
-          <Link to={`/shows/${id}/season/${seasonData.season.season}/episode/${index + 1}`}>
-            ▶ Play
-          </Link>
-        </div>
-      ))}
+      <h2>{seasonData.season.episodes.length} Episodes</h2>
+      <div className="season-episode-grid">
+        {seasonData.season.episodes.map((episode, index) => (
+          <div key={episode.id} className="season-episode-card">
+            <Link to={`/shows/${id}/season/${seasonData.season.season}/episode/${index + 1}`}>
+              <h3>Episode: {index + 1}</h3>
+              <strong>{episode.title}</strong>
+            </Link>
+          </div>
+        ))}
+      </div>
 
-      <button onClick={() => navigate(`/shows/${id}`)} className="back-button">← Back to Show</button>
+      <button onClick={() => navigate(`/shows/${id}`)} className="back-button">
+        <IoIosArrowBack />
+      </button>
     </div>
   );
 }

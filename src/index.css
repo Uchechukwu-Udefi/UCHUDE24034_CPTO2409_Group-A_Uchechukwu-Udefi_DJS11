@@ -155,7 +155,7 @@ footer {
 .back-button {
   display: inline-block;
   margin-top: 20px;
-  padding: 10px 20px;
+  padding: 10px;
   background-color: #f87a20;
   color: white;
   border-radius: 5px;
@@ -415,8 +415,6 @@ footer {
 
 
 /*** SHOW GENRE PAGES ***/
-
-
 .genre-container {
   position: sticky;
   top: 0;
@@ -515,15 +513,75 @@ footer {
 
 
 /*** SHOW SEASONS ***/
+.season-container {
+  padding: 1rem;
+}
 
-.seasons-container {
+.season-image {
+  width: 200px;
+  margin-bottom: 1rem;
+}
+
+.season-thumb {
+  width: 150px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease;
+}
+
+.seasons-card-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+  justify-content: flex-start;
 }
 
 .seasons-card {
+ display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 0 16px 16px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 150px;
+}
+
+.seasons-card:hover {
+  transform: scale(1.03);
+}
+
+.seasons-button {
+  background-color: #f87a20;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  margin-top: 0.5rem;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+
+/*** SEASON EPISODES ***/
+.season-episode-container {
+  padding: 1rem;
+}
+
+.season-episode-image {
+  width: 200px;
+  margin-bottom: 1rem;
+}
+
+.season-episode-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: start;
+}
+.season-episode-card {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -531,21 +589,25 @@ footer {
   padding: 16px;
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  width: 200px;
+  width: 150px;
+  background-color: #f9f9f9;
+  transition: transform 0.2s ease;
 }
 
-.seasons-button {
-  width: 150px;
+.season-episode-card:hover {
+  transform: scale(1.03);
+}
+.season-episode-card h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
   background-color: #f87a20;
   color: white;
-  padding: 10px 20px;
-  border: none;
+  padding: 10px;
   border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
 }
 
 /*** EPISODE PLAYER ***/
+
 .episode-player {
   padding: 1rem;
   padding-bottom: 4rem;
