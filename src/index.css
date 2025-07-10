@@ -511,6 +511,18 @@ footer {
   border-radius: 10px;
 }
 
+.shows-sort-options {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+  padding: 10px 0;
+  gap: 10px;
+  position: sticky;
+  top: 0;
+  background: white;
+  z-index: 1000;
+}
+
 
 /*** SHOW SEASONS ***/
 .season-container {

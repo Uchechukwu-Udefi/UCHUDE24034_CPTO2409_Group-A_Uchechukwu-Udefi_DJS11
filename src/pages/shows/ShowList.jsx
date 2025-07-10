@@ -7,6 +7,7 @@ import Loading from "../../components/LoadingSpinner";
 export default function ShowList() {
 
     const [previews, setPreviews] = useState([]);
+    const [sortOption, setSortOption] = useState('A-Z');
     
       useEffect(() => {
         async function loadHomeData() {
@@ -21,6 +22,24 @@ export default function ShowList() {
         loadHomeData();
       }, []);
 
+    // Sorting logic
+    const getSortedPreviews = () => {
+        return previews.slice().sort((a, b) => {
+            switch (sortOption) {
+                case 'A-Z':
+                    return a.title.localeCompare(b.title);
+                case 'Z-A':
+                    return b.title.localeCompare(a.title);
+                case 'most-recent':
+                    return new Date(b.updated) - new Date(a.updated);
+                case 'least-recent':
+                    return new Date(a.updated) - new Date(b.updated);
+                default:
+                    return 0;
+            }
+        });
+    };
+
     if (previews.length === 0) return <Loading />;
 
     return(
@@ -32,12 +51,19 @@ export default function ShowList() {
 
             <GenreList />
 
-            <h2>Explore all shows (A-Z)</h2>
+            <h2>Explore all shows</h2>
+            <div className="shows-sort-options">
+                <label htmlFor="sort">Sort by: </label>
+                <select id="sort" value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
+                    <option value="A-Z">Title (A-Z)</option>
+                    <option value="Z-A">Title (Z-A)</option>
+                    <option value="most-recent">Most Recently Updated</option>
+                    <option value="least-recent">Oldest Updated</option>
+                </select>
+            </div>
+
             <div className="show-list-container">
-              {previews
-                .slice() // create a shallow copy to avoid mutating the original array
-                .sort((a, b) => a.title.localeCompare(b.title)) // sort alphabetically by title
-                .map(preview => (
+              {getSortedPreviews().map(preview => (
                   <div key={preview.id} className="show-list-item">
                     <img src={preview.image} alt={preview.title} />
                     <h3>{preview.title}</h3>
