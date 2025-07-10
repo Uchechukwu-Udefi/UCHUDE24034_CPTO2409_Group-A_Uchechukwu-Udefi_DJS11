@@ -17,40 +17,51 @@ export function PlaybackProvider({ children }) {
   const [seasonEpisodes, setSeasonEpisodes] = useState([]);
   const [history, setHistory] = useState([]);
   const [favorites, setFavorites] = useState([]);
+  const [completedEpisodes, setCompletedEpisodes] = useState([]);
   const audioRef = useRef(null);
   const location = useLocation();
 
-  // 🧠 Determine if we are on the full episode player view
   const isEpisodePlayerPage = /^\/shows\/[^/]+\/season\/[^/]+\/episode\/[^/]+$/.test(location.pathname);
 
-  // 📦 Load history from localStorage on first load
+  // 📦 Load from localStorage on mount
   useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem("playbackHistory")) || [];
-    setHistory(saved);
+    const savedHistory = JSON.parse(localStorage.getItem("playbackHistory")) || [];
+    const savedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
+    const savedCompleted = JSON.parse(localStorage.getItem("completedEpisodes")) || [];
+
+    setHistory(savedHistory);
+    setFavorites(savedFavorites);
+    setCompletedEpisodes(savedCompleted);
   }, []);
 
-  // 💾 Persist history to localStorage when updated
+  // 💾 Persist state to localStorage when updated
   useEffect(() => {
     localStorage.setItem("playbackHistory", JSON.stringify(history));
   }, [history]);
 
-  // 🔁 Set audio source when currentEpisode changes
+  useEffect(() => {
+    localStorage.setItem("favorites", JSON.stringify(favorites));
+  }, [favorites]);
+
+  useEffect(() => {
+    localStorage.setItem("completedEpisodes", JSON.stringify(completedEpisodes));
+  }, [completedEpisodes]);
+
+  // 🔁 Update audio source when episode changes
   useEffect(() => {
     if (currentEpisode?.audioUrl && audioRef.current) {
       const audio = audioRef.current;
       audio.pause();
       audio.src = currentEpisode.audioUrl;
-      audio.load(); // Do not auto-play here to respect autoplay restrictions
+      audio.load();
     }
   }, [currentEpisode]);
 
-  // ▶️ Play selected episode if it's not already playing
+  // ▶️ Play an episode
   const playShow = (episode) => {
     if (!episode) return;
 
     const episodeKey = `${episode.showId || episode.id}-${episode.seasonNumber}-${episode.episode}`;
-
-    // Skip reloading the same episode
     if (episodeKey === currentEpisode?._key) return;
 
     const enrichedEpisode = {
@@ -60,38 +71,48 @@ export function PlaybackProvider({ children }) {
 
     setCurrentEpisode(enrichedEpisode);
 
-    // Update playback history
     setHistory((prev) => {
       const filtered = prev.filter((e) => e._key !== episodeKey);
       return [enrichedEpisode, ...filtered].slice(0, 10);
     });
   };
 
-  // Optional: Load entire season’s episodes (for next/prev logic)
+  // 🧭 Load season data
   const loadSeason = (episodes) => {
     setSeasonEpisodes(episodes);
   };
 
-  // 🗂️ Load favorites from localStorage
-
+  // ⭐ Toggle favorite
   const toggleFavorite = (episode) => {
-    setFavorites(prev => {
-      const exists = prev.some(fav => fav._key === episode._key);
-      if (exists) {
-        return prev.filter(fav => fav._key !== episode._key);
-      } else {
-        const enriched = {
-          ...episode,
-          addedAt: new Date().toISOString(), // Save timestamp
-        };
-        return [enriched, ...prev];
-      }
+    const episodeKey = episode._key || `${episode.showId || episode.id}-${episode.seasonNumber}-${episode.episode}`;
+    const enriched = { ...episode, _key: episodeKey, addedAt: new Date().toISOString() };
+
+    setFavorites((prev) => {
+      const exists = prev.some((fav) => fav._key === enriched._key);
+      return exists ? prev.filter((fav) => fav._key !== enriched._key) : [enriched, ...prev];
     });
   };
 
   const removeFavorite = (key) => {
-    setFavorites(prev => prev.filter(fav => fav._key !== key));
+    setFavorites((prev) => prev.filter((fav) => fav._key !== key));
   };
+
+  // ✅ Track when audio finishes
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    const handleEnded = () => {
+      if (currentEpisode?._key && !completedEpisodes.includes(currentEpisode._key)) {
+        setCompletedEpisodes((prev) => [...prev, currentEpisode._key]);
+      }
+    };
+
+    audio.addEventListener("ended", handleEnded);
+    return () => {
+      audio.removeEventListener("ended", handleEnded);
+    };
+  }, [currentEpisode, completedEpisodes]);
 
   return (
     <PlaybackContext.Provider
@@ -105,21 +126,19 @@ export function PlaybackProvider({ children }) {
         loadSeason,
         favorites,
         toggleFavorite,
-        removeFavorite
+        removeFavorite,
+        completedEpisodes,
       }}
     >
       {children}
 
-      {/* Global player visible only outside episode full page */}
       {!isEpisodePlayerPage && <GlobalPlayer />}
-
-      {/* Hidden audio tag that controls playback */}
       <audio ref={audioRef} preload="metadata" />
     </PlaybackContext.Provider>
   );
 }
 
-// Hook for easy context access
+// Custom hook
 export function usePlayback() {
   return useContext(PlaybackContext);
 }
