@@ -869,6 +869,64 @@ footer {
 }
 
 
+/*** FAVORITE SHOWS STYLES ***/
+.favorite-container {
+  padding: 1rem;
+}
+
+.favorite-season-group {
+  background-color: #634DB8;
+  color: white;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.favorite-episode-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.favorite-episode-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  background: #f9f9f9;
+  color: #000;
+  padding: 0.5rem;
+  border-radius: 6px;
+  transition: background 0.2s ease-in-out;
+}
+
+.favorite-episode-item:hover {
+  background: #ccc;
+}
+
+.favorite-episode-image {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 4px;
+  margin-right: 12px;
+}
+
+.favorite-episode-info {
+  flex: 1;
+  font-size: 0.95rem;
+}
+
+.favorite-play-button {
+  background-color: #f87a20;
+  color: white;
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.2s ease-in-out;
+}
+
+
 /*** LOGIN STYLES ***/
 .login-container {
   max-width: 300px;

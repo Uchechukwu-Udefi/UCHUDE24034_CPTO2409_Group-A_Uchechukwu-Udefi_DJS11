@@ -19,22 +19,22 @@ export default function Favorites() {
   }, {});
 
   return (
-    <div style={{ padding: "2rem" }}>
+    <div className="favorite-container">
       <h1>Recently Played</h1>
       {Object.entries(grouped).length === 0 && <p>No recent plays.</p>}
 
       {Object.entries(grouped).map(([seasonKey, episodes]) => (
-        <div key={seasonKey} style={{ marginBottom: "2rem" }}>
+        <div key={seasonKey} className="favorite-season-group">
           <h2>{seasonKey}</h2>
-          <ul style={{ listStyle: "none", paddingLeft: 0 }}>
+          <ul className="favorite-episode-list">
             {episodes.map(ep => (
-              <li key={ep._key} style={{ marginBottom: "0.5rem", display: "flex", alignItems: "center" }}>
+              <li key={ep._key} className="favorite-episode-item">
                 <img
                   src={ep.seasonImage}
-                  alt=""
-                  style={{ width: 50, height: 50, objectFit: "cover", borderRadius: 4, marginRight: 12 }}
+                  alt={`Season thumbnail for ${ep.title}`}
+                  className="favorite-episode-image"
                 />
-                <div style={{ flex: 1 }}>
+                <div className="favorite-episode-info">
                   <strong>{ep.title}</strong>
                   <br />
                   <small>Episode {ep.episode}</small>
@@ -43,7 +43,7 @@ export default function Favorites() {
                   onClick={() =>
                     navigate(`/shows/${ep.showId || ep.id}/season/${ep.seasonNumber}/episode/${ep.episode}`)
                   }
-                  className="back-button"
+                  className="favorite-play-button"
                 >
                   ▶ Play
                 </button>
