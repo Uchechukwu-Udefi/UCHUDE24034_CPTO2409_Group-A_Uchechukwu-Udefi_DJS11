@@ -15,11 +15,14 @@ export default function BackButton() {
 
     window.addEventListener("beforeunload", saveScrollPosition);
 
+    // Copy the ref value to a local variable
+    const scrollPositionsSnapshot = { ...scrollPositions.current };
+
     return () => {
       saveScrollPosition(); // Save on cleanup as well
       window.removeEventListener("beforeunload", saveScrollPosition);
 
-      const savedScroll = scrollPositions.current[location.key];
+      const savedScroll = scrollPositionsSnapshot[location.key];
       if (savedScroll !== undefined) {
         window.scrollTo(0, savedScroll);
       }
