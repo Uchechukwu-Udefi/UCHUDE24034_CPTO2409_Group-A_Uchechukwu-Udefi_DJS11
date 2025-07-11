@@ -69,8 +69,8 @@ export default function Genre() {
             <p>No shows found for this genre.</p>
         )}
       </div>
-
-      <button onClick={() => navigate("/")} className="back-button"><IoIosArrowBack /></button>
+      {/* Back button to navigate to the previous page */}
+      <button onClick={() => navigate(-1)} className="back-button"><IoIosArrowBack /></button>
     </div>
   );
 }

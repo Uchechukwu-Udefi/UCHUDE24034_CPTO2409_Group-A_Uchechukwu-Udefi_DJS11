@@ -53,7 +53,7 @@ export default function ShowPage() {
           </div>
         ))}
       </div>
-        <button onClick={() => navigate("/shows")} className="back-button"><IoIosArrowBack /></button>
+        <button onClick={() => navigate(-1)} className="back-button"><IoIosArrowBack /></button>
       </div>
   );
 }
