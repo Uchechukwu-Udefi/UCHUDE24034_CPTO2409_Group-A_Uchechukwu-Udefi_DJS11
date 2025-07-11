@@ -128,14 +128,26 @@ export function PlaybackProvider({ children }) {
 
   // Toggle favorite
   const toggleFavorite = (episode) => {
-    const episodeKey = episode._key || `${episode.showId || episode.id}-${episode.seasonNumber}-${episode.episode}`;
-    const enriched = { ...episode, _key: episodeKey, addedAt: new Date().toISOString() };
+  const episodeKey = episode._key || `${episode.showId || episode.id}-${episode.seasonNumber}-${episode.episode}`;
+  
+  setFavorites((prev) => {
+    const exists = prev.find((fav) => fav._key === episodeKey);
 
-    setFavorites((prev) => {
-      const exists = prev.some((fav) => fav._key === enriched._key);
-      return exists ? prev.filter((fav) => fav._key !== enriched._key) : [enriched, ...prev];
-    });
-  };
+    if (exists) {
+      // Remove from favorites
+      return prev.filter((fav) => fav._key !== episodeKey);
+    } else {
+      // Add to favorites with current timestamp
+      const enriched = {
+        ...episode,
+        _key: episodeKey,
+        addedAt: new Date().toISOString()
+      };
+      return [enriched, ...prev];
+    }
+  });
+};
+
 
   const removeFavorite = (key) => {
     setFavorites((prev) => prev.filter((fav) => fav._key !== key));

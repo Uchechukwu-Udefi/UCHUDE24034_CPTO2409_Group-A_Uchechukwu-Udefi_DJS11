@@ -69,6 +69,12 @@ export default function Favorites() {
                   <strong>{ep.title}</strong>
                   <br />
                   <small>Episode {ep.episode}</small>
+                  <br />
+                  {ep.addedAt && (
+                    <small className="favorite-added-at">
+                      Added on: {new Date(ep.addedAt).toLocaleString()}
+                    </small>
+                  )}
                 </div>
                 <button
                   onClick={() =>
