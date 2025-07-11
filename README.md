@@ -2,6 +2,12 @@
 
 A full-featured React web application for browsing, viewing, and managing podcast shows. Users can search, explore by genre, view detailed season and episode info, manage favorite shows, view watch history, and enjoy in-app audio playback — all within a seamless experience using modern React features and routing.
 
+## Video Demo
+[![Watch the video](https://www.loom.com/share/96c61fa784364f019a48da826664785b)](https://www.loom.com/share/96c61fa784364f019a48da826664785b)
+
+[![Watch the video](https://www.loom.com/share/43cc071606284f88b03db36066a56c4e)](https://www.loom.com/share/43cc071606284f88b03db36066a56c4e)
+
+
 ---
 
 ## 🚀 Features
@@ -123,6 +129,18 @@ uchechukwu-udefi-podcast-app/
 - **User Authentication**:  
   /login → Log in to your account.
     /register → Create a new account.
+
+[![Watch the video](https://www.loom.com/share/b35894707c6342e3bc7b46f37d67e82b)](https://www.loom.com/share/b35894707c6342e3bc7b46f37d67e82b)
+
+[![Watch the video](https://www.loom.com/share/7842b5ff9d7c4d84b2e9b116022f8ea0)](https://www.loom.com/share/7842b5ff9d7c4d84b2e9b116022f8ea0)
+
+[![Watch the video](https://www.loom.com/share/33f99d7c4c06495983430cc3d8211886)](https://www.loom.com/share/33f99d7c4c06495983430cc3d8211886)
+
+
+## 📸 Screenshots
+![Screenshot 1](assets/images/lg-screen.jpg)
+![Screenshot 2](assets/images/md-screen.jpg)
+![Screenshot 3](assets/images/sm-screen.jpg)
 
 
 ## ✅ Technologies Used
