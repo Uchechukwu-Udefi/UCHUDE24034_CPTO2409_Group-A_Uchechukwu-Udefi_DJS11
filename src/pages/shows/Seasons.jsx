@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { fetchShowById } from '/server';
 import Loading from '../../components/LoadingSpinner';
-import { IoIosArrowBack } from "react-icons/io";
+import BackButton from '../../components/BackButton';
 
 export default function Season() {
   const { id, seasonNumber } = useParams();
-  const navigate = useNavigate();
   const [seasonData, setSeasonData] = useState(null);
 
   useEffect(() => {
@@ -52,9 +51,7 @@ export default function Season() {
         ))}
       </div>
 
-      <button onClick={() => navigate(`/shows/${id}`)} className="back-button">
-        <IoIosArrowBack />
-      </button>
+      <BackButton />
     </div>
   );
 }

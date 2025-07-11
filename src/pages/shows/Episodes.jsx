@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { fetchShowById } from "/server";
 import { usePlayback } from "../../context/PlaybackContext";
-import { IoIosArrowBack } from "react-icons/io";
+import BackButton from "../../components/BackButton";
 import { FaStar, FaRegStar } from "react-icons/fa";
 import Loading from "../../components/LoadingSpinner";
 
@@ -186,12 +186,7 @@ export default function EpisodePlayer() {
         </div>
       </div>
 
-      <button
-        onClick={() => navigate(`/shows/${id}/season/${seasonNumber}`)}
-        className="back-button"
-      >
-        <IoIosArrowBack />
-      </button>
+      <BackButton />
     </div>
   );
 }

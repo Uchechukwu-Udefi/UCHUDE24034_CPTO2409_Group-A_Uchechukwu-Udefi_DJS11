@@ -1,13 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
 import { fetchShowById } from '/server';
 import Loading from '../../components/LoadingSpinner';
-import { IoIosArrowBack } from "react-icons/io";
+import BackButton from '../../components/BackButton';
 
 export default function ShowPage() {
   const { id } = useParams();
-  const navigate = useNavigate();
   const [show, setShow] = useState(null);
 
   useEffect(() => {
@@ -53,7 +51,7 @@ export default function ShowPage() {
           </div>
         ))}
       </div>
-        <button onClick={() => navigate(-1)} className="back-button"><IoIosArrowBack /></button>
+        <BackButton />
       </div>
   );
 }

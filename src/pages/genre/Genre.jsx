@@ -1,12 +1,11 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { fetchPreviews, fetchShowById, genreMap } from "/server";
 import Loading from "../../components/LoadingSpinner";
-import { IoIosArrowBack } from "react-icons/io";
+import BackButton from "../../components/BackButton";
 
 export default function Genre() {
-  const navigate = useNavigate();
   const { genreId } = useParams(); 
   const genreName = genreMap[genreId];
 
@@ -70,7 +69,7 @@ export default function Genre() {
         )}
       </div>
       {/* Back button to navigate to the previous page */}
-      <button onClick={() => navigate(-1)} className="back-button"><IoIosArrowBack /></button>
+      <BackButton />
     </div>
   );
 }
