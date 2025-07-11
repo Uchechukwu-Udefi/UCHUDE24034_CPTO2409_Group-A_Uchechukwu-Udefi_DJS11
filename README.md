@@ -1,4 +1,4 @@
-# 🎵 UTUNE PODCAST APP | PORTFOLIO PIECE 💿
+# 🎵 U-TUNE PODCAST APP | PORTFOLIO PIECE 💿
 
 A full-featured React web application for browsing, viewing, and managing podcast shows. Users can search, explore by genre, view detailed season and episode info, manage favorite shows, view watch history, and enjoy in-app audio playback — all within a seamless experience using modern React features and routing.
 
