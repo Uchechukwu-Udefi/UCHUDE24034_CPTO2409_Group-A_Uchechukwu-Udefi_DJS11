@@ -9,22 +9,37 @@ import { useLocation } from "react-router-dom";
 import GlobalPlayer from "../components/GlobalPlayer.jsx";
 import PropTypes from "prop-types";
 
-// Create Context
+// Create Context for global playback state
 const PlaybackContext = createContext();
 
+/**
+ * Provides global playback state and control functions to the application.
+ *
+ * Handles:
+ * - Playing episodes
+ * - Managing history, favorites, and completed episodes
+ * - Tracking progress
+ * - Persisting data to localStorage
+ * - Controlling the audio element
+ *
+ * @component
+ * @param {Object} props
+ * @param {React.ReactNode} props.children - Components that consume playback context
+ * @returns {JSX.Element}
+ */
 export function PlaybackProvider({ children }) {
   const [currentEpisode, setCurrentEpisode] = useState(null);
   const [seasonEpisodes, setSeasonEpisodes] = useState([]);
   const [history, setHistory] = useState([]);
   const [favorites, setFavorites] = useState([]);
   const [completedEpisodes, setCompletedEpisodes] = useState([]);
-  const [progressMap, setProgressMap] = useState({}); // Track progress %
+  const [progressMap, setProgressMap] = useState({}); // { episodeKey: percentage }
   const audioRef = useRef(null);
   const location = useLocation();
 
   const isEpisodePlayerPage = /^\/shows\/[^/]+\/season\/[^/]+\/episode\/[^/]+$/.test(location.pathname);
 
-  // Load from localStorage on mount
+  // Load persisted data from localStorage on mount
   useEffect(() => {
     const savedHistory = JSON.parse(localStorage.getItem("playbackHistory")) || [];
     const savedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
@@ -37,7 +52,7 @@ export function PlaybackProvider({ children }) {
     setProgressMap(savedProgress);
   }, []);
 
-  // Persist to localStorage when updated
+  // Persist state changes to localStorage
   useEffect(() => {
     localStorage.setItem("playbackHistory", JSON.stringify(history));
   }, [history]);
@@ -54,7 +69,7 @@ export function PlaybackProvider({ children }) {
     localStorage.setItem("episodeProgress", JSON.stringify(progressMap));
   }, [progressMap]);
 
-  // Update audio source when currentEpisode changes
+  // When current episode changes, load and update the audio source
   useEffect(() => {
     if (currentEpisode?.audioUrl && audioRef.current) {
       const audio = audioRef.current;
@@ -64,7 +79,7 @@ export function PlaybackProvider({ children }) {
     }
   }, [currentEpisode]);
 
-  // Update progress during playback
+  // Track and update episode progress during playback
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio || !currentEpisode?._key) return;
@@ -85,7 +100,7 @@ export function PlaybackProvider({ children }) {
     };
   }, [currentEpisode]);
 
-  // Mark episode as completed when playback ends
+  // Mark episode as completed when playback finishes
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
@@ -102,7 +117,12 @@ export function PlaybackProvider({ children }) {
     };
   }, [currentEpisode, completedEpisodes]);
 
-  // Play an episode
+  /**
+   * Starts playback for a given episode.
+   * Adds the episode to history unless it's already the current one.
+   *
+   * @param {Object} episode - Episode object
+   */
   const playShow = (episode) => {
     if (!episode) return;
 
@@ -122,39 +142,54 @@ export function PlaybackProvider({ children }) {
     });
   };
 
-  // Load season data
+  /**
+   * Sets the list of episodes for the current season.
+   *
+   * @param {Array<Object>} episodes - List of episode objects
+   */
   const loadSeason = (episodes) => {
     setSeasonEpisodes(episodes);
   };
 
-  // Toggle favorite
+  /**
+   * Toggles an episode as favorite. Adds or removes it from favorites.
+   *
+   * @param {Object} episode - Episode to toggle
+   */
   const toggleFavorite = (episode) => {
-  const episodeKey = episode._key || `${episode.showId || episode.id}-${episode.seasonNumber}-${episode.episode}`;
-  
-  setFavorites((prev) => {
-    const exists = prev.find((fav) => fav._key === episodeKey);
+    const episodeKey = episode._key || `${episode.showId || episode.id}-${episode.seasonNumber}-${episode.episode}`;
 
-    if (exists) {
-      // Remove from favorites
-      return prev.filter((fav) => fav._key !== episodeKey);
-    } else {
-      // Add to favorites with current timestamp
-      const enriched = {
-        ...episode,
-        _key: episodeKey,
-        addedAt: new Date().toISOString()
-      };
-      return [enriched, ...prev];
-    }
-  });
-};
+    setFavorites((prev) => {
+      const exists = prev.find((fav) => fav._key === episodeKey);
 
+      if (exists) {
+        // Remove from favorites
+        return prev.filter((fav) => fav._key !== episodeKey);
+      } else {
+        // Add to favorites
+        const enriched = {
+          ...episode,
+          _key: episodeKey,
+          addedAt: new Date().toISOString(),
+        };
+        return [enriched, ...prev];
+      }
+    });
+  };
 
+  /**
+   * Removes a favorite by its episode key.
+   *
+   * @param {string} key - The `_key` of the episode to remove
+   */
   const removeFavorite = (key) => {
     setFavorites((prev) => prev.filter((fav) => fav._key !== key));
   };
 
-  // Reset listening progress and history
+  /**
+   * Resets listening history, completed episodes, and progress.
+   * Also clears localStorage entries.
+   */
   const resetProgress = () => {
     setHistory([]);
     setCompletedEpisodes([]);
@@ -164,6 +199,7 @@ export function PlaybackProvider({ children }) {
     localStorage.removeItem("completedEpisodes");
     localStorage.removeItem("episodeProgress");
   };
+
   return (
     <PlaybackContext.Provider
       value={{
@@ -183,7 +219,6 @@ export function PlaybackProvider({ children }) {
       }}
     >
       {children}
-
       {!isEpisodePlayerPage && <GlobalPlayer />}
       <audio ref={audioRef} preload="metadata" />
     </PlaybackContext.Provider>
@@ -194,7 +229,11 @@ PlaybackProvider.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-// Custom hook
+/**
+ * Custom hook to access the playback context.
+ *
+ * @returns {Object} Playback context value
+ */
 export function usePlayback() {
   return useContext(PlaybackContext);
 }
