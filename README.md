@@ -4,8 +4,10 @@ A full-featured React web application for browsing, viewing, and managing podcas
 
 ## Video Demo
 [[Watch the video]](https://www.loom.com/share/96c61fa784364f019a48da826664785b)
-
 [[Watch the video]](https://www.loom.com/share/43cc071606284f88b03db36066a56c4e)
+[[Watch the video]](https://www.loom.com/share/b35894707c6342e3bc7b46f37d67e82b)
+[[Watch the video]](https://www.loom.com/share/7842b5ff9d7c4d84b2e9b116022f8ea0)
+[[Watch the video]](https://www.loom.com/share/33f99d7c4c06495983430cc3d8211886)
 
 
 ---
@@ -93,6 +95,9 @@ Uchechukwu-Udefi-Podcast-App/
 ├── index.html
 ├── server.js
 └── README.md
+```
+## 📖 Documentation
+This project is structured to provide a clear separation of concerns, with components for UI elements, context for global state management, and pages for different routes in the application. The `assets` directory contains images used throughout the app, while the `public` directory holds static files like the favicon and redirects.
 
 
 ## 🧪 Usage Examples
@@ -130,12 +135,6 @@ Uchechukwu-Udefi-Podcast-App/
 - **User Authentication**:  
   /login → Log in to your account.
     /register → Create a new account.
-
-[[Watch the video]](https://www.loom.com/share/b35894707c6342e3bc7b46f37d67e82b)
-
-[[Watch the video]](https://www.loom.com/share/7842b5ff9d7c4d84b2e9b116022f8ea0)
-
-[[Watch the video]](https://www.loom.com/share/33f99d7c4c06495983430cc3d8211886)
 
 
 ## 📸 Screenshots
