@@ -2,6 +2,9 @@
 
 A full-featured React web application for browsing, viewing, and managing podcast shows. Users can search, explore by genre, view detailed season and episode info, manage favorite shows, view watch history, and enjoy in-app audio playback — all within a seamless experience using modern React features and routing.
 
+## Live Demo
+Experience the app live at: https://u-tune.netlify.app/
+
 ## Video Demo
 [[Watch the video]](https://www.loom.com/share/96c61fa784364f019a48da826664785b)
 [[Watch the video]](https://www.loom.com/share/43cc071606284f88b03db36066a56c4e)
