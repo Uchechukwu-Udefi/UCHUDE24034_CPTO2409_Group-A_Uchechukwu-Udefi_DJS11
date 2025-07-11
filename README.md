@@ -130,17 +130,17 @@ uchechukwu-udefi-podcast-app/
   /login → Log in to your account.
     /register → Create a new account.
 
-[![Watch the video](https://www.loom.com/share/b35894707c6342e3bc7b46f37d67e82b)](https://www.loom.com/share/b35894707c6342e3bc7b46f37d67e82b)
+[[Watch the video]](https://www.loom.com/share/b35894707c6342e3bc7b46f37d67e82b)
 
-[![Watch the video](https://www.loom.com/share/7842b5ff9d7c4d84b2e9b116022f8ea0)](https://www.loom.com/share/7842b5ff9d7c4d84b2e9b116022f8ea0)
+[[Watch the video]](https://www.loom.com/share/7842b5ff9d7c4d84b2e9b116022f8ea0)
 
-[![Watch the video](https://www.loom.com/share/33f99d7c4c06495983430cc3d8211886)](https://www.loom.com/share/33f99d7c4c06495983430cc3d8211886)
+[[Watch the video]](https://www.loom.com/share/33f99d7c4c06495983430cc3d8211886)
 
 
 ## 📸 Screenshots
-![Screenshot 1](assets/images/lg-screen.jpg)
-![Screenshot 2](assets/images/md-screen.jpg)
-![Screenshot 3](assets/images/sm-screen.jpg)
+[[Screenshot 1](assets/images/lg-screen.jpg)]
+[[Screenshot 2](assets/images/md-screen.jpg)]
+[[Screenshot 3](assets/images/sm-screen.jpg)]
 
 
 ## ✅ Technologies Used
