@@ -7,6 +7,7 @@ import {
 } from "react";
 import { useLocation } from "react-router-dom";
 import GlobalPlayer from "../components/GlobalPlayer.jsx";
+import PropTypes from "prop-types";
 
 // Create Context
 const PlaybackContext = createContext();
@@ -163,7 +164,6 @@ export function PlaybackProvider({ children }) {
     localStorage.removeItem("completedEpisodes");
     localStorage.removeItem("episodeProgress");
   };
-
   return (
     <PlaybackContext.Provider
       value={{
@@ -189,6 +189,10 @@ export function PlaybackProvider({ children }) {
     </PlaybackContext.Provider>
   );
 }
+
+PlaybackProvider.propTypes = {
+  children: PropTypes.node.isRequired,
+};
 
 // Custom hook
 export function usePlayback() {
