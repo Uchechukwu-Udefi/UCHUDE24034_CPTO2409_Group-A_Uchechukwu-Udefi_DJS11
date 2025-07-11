@@ -46,7 +46,8 @@ http://localhost:3000
 
 ## 🧭 Project Structure
 
-uchechukwu-udefi-podcast-app/
+``` plaintext
+Uchechukwu-Udefi-Podcast-App/
 │
 ├── assets/
 │   ├── images/
@@ -141,6 +142,7 @@ uchechukwu-udefi-podcast-app/
 [[Screenshot 1](assets/images/lg-screen.jpg)]
 [[Screenshot 2](assets/images/md-screen.jpg)]
 [[Screenshot 3](assets/images/sm-screen.jpg)]
+[[Screenshot 4](assets/images/loading.jpg)]
 
 
 ## ✅ Technologies Used
