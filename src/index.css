@@ -121,6 +121,9 @@ header .login-link {
 
 main {
   margin-bottom: 84px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 footer {
@@ -221,6 +224,7 @@ footer {
   color: white;
   padding: 45px 23px;
   margin-bottom: 50px;
+  overflow: auto;
 }
 
 .home-container h1 {
@@ -269,7 +273,8 @@ footer {
 .home-preview-card {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  overflow: visible;
+  overflow-x: auto;
+  overflow-y: auto;
   gap: 1rem;
 }
 
@@ -298,7 +303,7 @@ footer {
   .home-preview-card {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    overflow: visible;
+    overflow: hidden;
     gap: 1rem;
   }
 
@@ -375,6 +380,7 @@ footer {
   .show-list-container {
     justify-content: center;
     gap: 0.75rem;
+    overflow: hidden;
   }
 
   .show-list-item {
@@ -783,6 +789,8 @@ footer {
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: space-between;
+    width: 100%;
   }
 
   .global-player-open-btn, .global-player-close-btn {
