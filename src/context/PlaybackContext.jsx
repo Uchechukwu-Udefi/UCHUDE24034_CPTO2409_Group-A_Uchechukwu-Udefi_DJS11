@@ -33,7 +33,9 @@ export function PlaybackProvider({ children }) {
   const [history, setHistory] = useState([]);
   const [favorites, setFavorites] = useState([]);
   const [completedEpisodes, setCompletedEpisodes] = useState([]);
-  const [progressMap, setProgressMap] = useState({}); // { episodeKey: percentage }
+  const [progressMap, setProgressMap] = useState({});
+  const [isPlaying, setIsPlaying] = useState(false);
+
   const audioRef = useRef(null);
   const location = useLocation();
 
@@ -45,11 +47,13 @@ export function PlaybackProvider({ children }) {
     const savedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
     const savedCompleted = JSON.parse(localStorage.getItem("completedEpisodes")) || [];
     const savedProgress = JSON.parse(localStorage.getItem("episodeProgress")) || {};
+    const savedCurrentEpisode = JSON.parse(localStorage.getItem("currentEpisode")) || null;
 
     setHistory(savedHistory);
     setFavorites(savedFavorites);
     setCompletedEpisodes(savedCompleted);
     setProgressMap(savedProgress);
+    setCurrentEpisode(savedCurrentEpisode);
   }, []);
 
   // Persist state changes to localStorage
@@ -69,6 +73,10 @@ export function PlaybackProvider({ children }) {
     localStorage.setItem("episodeProgress", JSON.stringify(progressMap));
   }, [progressMap]);
 
+  useEffect(() => {
+    localStorage.setItem("currentEpisode", JSON.stringify(currentEpisode));
+  }, [currentEpisode]);
+
   // When current episode changes, load and update the audio source
   useEffect(() => {
     if (currentEpisode?.audioUrl && audioRef.current) {
@@ -79,7 +87,7 @@ export function PlaybackProvider({ children }) {
     }
   }, [currentEpisode]);
 
-  // Track and update episode progress during playback
+  // Track listening progress
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio || !currentEpisode?._key) return;
@@ -95,9 +103,7 @@ export function PlaybackProvider({ children }) {
     };
 
     audio.addEventListener("timeupdate", handleTimeUpdate);
-    return () => {
-      audio.removeEventListener("timeupdate", handleTimeUpdate);
-    };
+    return () => audio.removeEventListener("timeupdate", handleTimeUpdate);
   }, [currentEpisode]);
 
   // Mark episode as completed when playback finishes
@@ -118,28 +124,60 @@ export function PlaybackProvider({ children }) {
   }, [currentEpisode, completedEpisodes]);
 
   /**
-   * Starts playback for a given episode.
-   * Adds the episode to history unless it's already the current one.
+   * Starts playing the specified episode.
+   * If it's the same episode, playback is not restarted.
+   * Playback resumes from previously saved progress.
    *
-   * @param {Object} episode - Episode object
+   * @param {Object} episode - Episode object to play
    */
   const playShow = (episode) => {
     if (!episode) return;
 
     const episodeKey = `${episode.showId || episode.id}-${episode.seasonNumber}-${episode.episode}`;
-    if (episodeKey === currentEpisode?._key) return;
-
-    const enrichedEpisode = {
-      ...episode,
-      _key: episodeKey,
-    };
+    const enrichedEpisode = { ...episode, _key: episodeKey };
 
     setCurrentEpisode(enrichedEpisode);
 
+    // Load audio and resume progress after a short delay
+    const progress = progressMap[episodeKey] || 0;
+    setTimeout(() => {
+      const audio = audioRef.current;
+      if (!audio) return;
+
+      const seekAndPlay = () => {
+        if (!isNaN(audio.duration)) {
+          audio.currentTime = (progress / 100) * audio.duration;
+          audio.play().then(() => setIsPlaying(true)).catch(console.error);
+        }
+      };
+
+      if (audio.readyState >= 1) {
+        seekAndPlay();
+      } else {
+        audio.addEventListener("loadedmetadata", seekAndPlay, { once: true });
+      }
+    }, 100);
+
+    // Update history
     setHistory((prev) => {
       const filtered = prev.filter((e) => e._key !== episodeKey);
       return [enrichedEpisode, ...filtered].slice(0, 10);
     });
+  };
+
+   /**
+   * Toggles play/pause of the audio player.
+   */
+  const togglePlayback = () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    if (audio.paused) {
+      audio.play().then(() => setIsPlaying(true)).catch(console.error);
+    } else {
+      audio.pause();
+      setIsPlaying(false);
+    }
   };
 
   /**
@@ -152,21 +190,16 @@ export function PlaybackProvider({ children }) {
   };
 
   /**
-   * Toggles an episode as favorite. Adds or removes it from favorites.
-   *
+   * Toggles an episode as a favorite (add/remove).
    * @param {Object} episode - Episode to toggle
    */
   const toggleFavorite = (episode) => {
     const episodeKey = episode._key || `${episode.showId || episode.id}-${episode.seasonNumber}-${episode.episode}`;
-
     setFavorites((prev) => {
       const exists = prev.find((fav) => fav._key === episodeKey);
-
       if (exists) {
-        // Remove from favorites
         return prev.filter((fav) => fav._key !== episodeKey);
       } else {
-        // Add to favorites
         const enriched = {
           ...episode,
           _key: episodeKey,
@@ -176,6 +209,7 @@ export function PlaybackProvider({ children }) {
       }
     });
   };
+
 
   /**
    * Removes a favorite by its episode key.
@@ -204,18 +238,21 @@ export function PlaybackProvider({ children }) {
     <PlaybackContext.Provider
       value={{
         currentEpisode,
+        currentEpisodeKey: currentEpisode?._key,
+        isPlaying,
         setCurrentEpisode,
-        playShow,
         audioRef,
+        playShow,
+        togglePlayback,
         history,
+        progressMap,
+        resetProgress,
         seasonEpisodes,
         loadSeason,
         favorites,
         toggleFavorite,
         removeFavorite,
         completedEpisodes,
-        progressMap,
-        resetProgress,
       }}
     >
       {children}

@@ -1,10 +1,15 @@
 import { usePlayback } from "../../context/PlaybackContext";
-import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 export default function Favorites() {
-  const { favorites, removeFavorite } = usePlayback();
-  const navigate = useNavigate();
+  const {
+    favorites,
+    removeFavorite,
+    playShow,
+    togglePlayback,
+    currentEpisodeKey,
+    isPlaying,
+  } = usePlayback();
   const [sortOption, setSortOption] = useState("recent");
 
   if (favorites.length === 0) {
@@ -33,6 +38,14 @@ export default function Favorites() {
     return acc;
   }, {});
 
+  const handlePlay = (ep) => {
+    if (currentEpisodeKey === ep._key) {
+      togglePlayback();
+    } else {
+      playShow(ep);
+    }
+  };
+
   return (
     <div className="favorite-container">
       <h1>Favorites</h1>
@@ -54,44 +67,36 @@ export default function Favorites() {
       </div>
 
       {/* Grouped favorites */}
-      {Object.entries(grouped).map(([seasonKey, episodes]) => (
+       {Object.entries(grouped).map(([seasonKey, episodes]) => (
         <div key={seasonKey} className="favorite-season-group">
           <h2>{seasonKey}</h2>
           <ul className="favorite-episode-list">
-            {episodes.map(ep => (
-              <li key={ep._key} className="favorite-episode-item">
-                <img
-                  src={ep.seasonImage}
-                  alt={`Season thumbnail for ${ep.title}`}
-                  className="favorite-episode-image"
-                />
-                <div className="favorite-episode-info">
-                  <strong>{ep.title}</strong>
-                  <br />
-                  <small>Episode {ep.episode}</small>
-                  <br />
-                  {ep.addedAt && (
-                    <small className="favorite-added-at">
-                      Added on: {new Date(ep.addedAt).toLocaleString()}
-                    </small>
-                  )}
-                </div>
-                <button
-                  onClick={() =>
-                    navigate(`/shows/${ep.showId}/season/${ep.seasonNumber}/episode/${ep.episode}`)
-                  }
-                  className="favorite-play-button"
-                >
-                  ▶ Play
-                </button>
-                <button
-                  onClick={() => removeFavorite(ep._key)}
-                  className="favorite-remove-button"
-                >
-                  ✖ Remove
-                </button>
-              </li>
-            ))}
+            {episodes.map((ep) => {
+              const isEpisodePlaying = currentEpisodeKey === ep._key && isPlaying;
+
+              return (
+                <li key={ep._key} className="favorite-episode-item">
+                  <img src={ep.seasonImage} alt={ep.title} className="favorite-episode-image" />
+                  <div className="favorite-episode-info">
+                    <strong>{ep.title}</strong>
+                    <br />
+                    <small>Episode {ep.episode}</small>
+                  </div>
+                  <button
+                    onClick={() => handlePlay(ep)}
+                    className="favorite-play-button"
+                  >
+                    {isEpisodePlaying ? "⏸ Pause" : "▶ Play"}
+                  </button>
+                  <button
+                    onClick={() => removeFavorite(ep._key)}
+                    className="favorite-remove-button"
+                  >
+                    ✖ Remove
+                  </button>
+                </li>
+              );
+            })}
           </ul>
         </div>
       ))}

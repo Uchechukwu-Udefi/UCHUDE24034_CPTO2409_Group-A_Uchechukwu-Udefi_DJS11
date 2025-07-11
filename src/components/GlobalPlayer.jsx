@@ -4,9 +4,27 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { FaRegWindowClose } from "react-icons/fa";
 import ConfirmModal from "./ConfirmModal";
 
+/**
+ * GlobalPlayer component displays a mini audio player that syncs with global playback state.
+ * - Shows currently playing episode
+ * - Controls playback (play/pause)
+ * - Syncs progress, volume
+ * - Links to full episode page
+ * - Allows closing/resetting current episode
+ *
+ * Hidden on the full episode player page.
+ *
+ * @component
+ */
 export default function GlobalPlayer() {
-  const { currentEpisode, setCurrentEpisode, audioRef } = usePlayback();
-  const [isPlaying, setIsPlaying] = useState(false);
+  const {
+    currentEpisode,
+    setCurrentEpisode,
+    audioRef,
+    isPlaying,
+    togglePlayback,
+  } = usePlayback();
+
   const [progress, setProgress] = useState(0);
   const [volume, setVolume] = useState(1);
   const [isExpanded, setIsExpanded] = useState(false);
@@ -15,16 +33,18 @@ export default function GlobalPlayer() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Hide player on the EpisodePlayer page
   const isEpisodePage = /\/shows\/[^/]+\/season\/[^/]+\/episode\/[^/]+/.test(location.pathname);
 
+  /**
+   * Syncs player UI with the global audio element
+   */
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
 
     const updateProgress = () => setProgress(audio.currentTime);
-    const handlePlay = () => setIsPlaying(true);
-    const handlePause = () => setIsPlaying(false);
+    const handlePlay = () => {}; // No local isPlaying anymore
+    const handlePause = () => {};
 
     audio.addEventListener("timeupdate", updateProgress);
     audio.addEventListener("play", handlePlay);
@@ -37,56 +57,56 @@ export default function GlobalPlayer() {
     };
   }, [audioRef]);
 
-  if (isEpisodePage) return null;
+  /**
+   * Sets volume on mount
+   */
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = volume;
+    }
+  }, [audioRef]);
 
-  const togglePlayback = () => {
-    const audio = audioRef.current;
-    if (!audio) return;
-    audio.paused ? audio.play() : audio.pause();
-  };
+  // Hide player on episode page
+  if (isEpisodePage || !currentEpisode) return null;
 
-  const handleVolumeChange = (e) => {
-    const value = Number(e.target.value);
-    setVolume(value);
-    if (audioRef.current) audioRef.current.volume = value;
-  };
-
-  const handleCloseClick = () => {
-    setShowConfirm(true); // show the confirmation modal
-  };
-
+  /**
+   * Handles user closing the player
+   */
   const confirmClosePlayer = () => {
-    setShowConfirm(false); // hide modal
+    setShowConfirm(false);
 
     const audio = audioRef.current;
     if (audio) {
       audio.pause();
       audio.currentTime = 0;
     }
-    setIsPlaying(false);
-    setIsExpanded(false);
 
     if (typeof setCurrentEpisode === "function") {
       setCurrentEpisode(null);
     }
   };
 
-  const cancelClose = () => {
-    setShowConfirm(false);
-  };
-
+  /**
+   * Seeks to a new point in the track
+   * @param {Event} e
+   */
   const seek = (e) => {
     const audio = audioRef.current;
     const percent = e.target.value;
-    audio.currentTime = (audio.duration * percent) / 100;
+    if (audio?.duration) {
+      audio.currentTime = (audio.duration * percent) / 100;
+    }
   };
 
+  /**
+   * Formats seconds into MM:SS
+   * @param {number} s
+   * @returns {string}
+   */
   const formattedTime = (s) =>
     isNaN(s) ? "--:--" : new Date(s * 1000).toISOString().substr(14, 5);
 
   const duration = audioRef.current?.duration || 0;
-
-  if (!currentEpisode) return null;
 
   return (
     <div className={`global-player ${isExpanded ? "expanded" : ""}`}>
@@ -99,6 +119,7 @@ export default function GlobalPlayer() {
             navigate(`/shows/${currentEpisode.showId}/season/${currentEpisode.seasonNumber}/episode/${currentEpisode.episode}`)
           }
         />
+
         <div className="global-player__info">
           <strong>{currentEpisode.showTitle}</strong>
           <br />
@@ -109,7 +130,10 @@ export default function GlobalPlayer() {
           {isPlaying ? "⏸" : "▶"}
         </button>
 
-        <button onClick={() => setIsExpanded(!isExpanded)} className="global-player__button">
+        <button
+          onClick={() => setIsExpanded(!isExpanded)}
+          className="global-player__button"
+        >
           {isExpanded ? "🔽" : "🔼"}
         </button>
       </div>
@@ -135,35 +159,40 @@ export default function GlobalPlayer() {
               max="1"
               step="0.01"
               value={volume}
-              onChange={handleVolumeChange}
+              onChange={(e) => {
+                const value = Number(e.target.value);
+                setVolume(value);
+                if (audioRef.current) audioRef.current.volume = value;
+              }}
             />
           </div>
-          <div className="global-player-util-buttons">
-          <button
-            onClick={() =>
-              navigate(`/shows/${currentEpisode.showId}/season/${currentEpisode.seasonNumber}/episode/${currentEpisode.episode}`)
-            }
-            className="global-player-open-btn"
-          >
-            Open Full Player 🎧
-          </button>
-          
-          <button
-            onClick={handleCloseClick}
-            className="global-player-close-btn"
-            title="Close Player"
-            aria-label="Close Player"
-          >
-            <FaRegWindowClose />
-          </button>
 
-          {showConfirm && (
-            <ConfirmModal
-              message="Are you sure you want to stop and close the player?"
-              onConfirm={confirmClosePlayer}
-              onCancel={cancelClose}
-            />
-          )}
+          <div className="global-player-util-buttons">
+            <button
+              onClick={() =>
+                navigate(`/shows/${currentEpisode.showId}/season/${currentEpisode.seasonNumber}/episode/${currentEpisode.episode}`)
+              }
+              className="global-player-open-btn"
+            >
+              Open Full Player 🎧
+            </button>
+
+            <button
+              onClick={() => setShowConfirm(true)}
+              className="global-player-close-btn"
+              title="Close Player"
+              aria-label="Close Player"
+            >
+              <FaRegWindowClose />
+            </button>
+
+            {showConfirm && (
+              <ConfirmModal
+                message="Are you sure you want to stop and close the player?"
+                onConfirm={confirmClosePlayer}
+                onCancel={() => setShowConfirm(false)}
+              />
+            )}
           </div>
         </div>
       )}

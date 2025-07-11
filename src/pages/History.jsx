@@ -6,10 +6,18 @@ function HistoryPage() {
     progressMap,
     playShow,
     resetProgress,
+    togglePlayback,
+    isPlaying,
+    currentEpisodeKey,
   } = usePlayback();
 
   const handlePlay = (episode) => {
-    playShow(episode);
+    // If the clicked episode is already playing, just toggle
+    if (currentEpisodeKey === episode._key) {
+      togglePlayback();
+    } else {
+      playShow(episode); // will set currentEpisodeKey
+    }
   };
 
   const handleReset = () => {
@@ -20,53 +28,39 @@ function HistoryPage() {
   };
 
   return (
-    <div style={{ padding: "2rem", maxWidth: "800px", margin: "0 auto" }}>
+    <div className="history-container">
       <h1>Your Listening History</h1>
 
       {history.length === 0 ? (
         <p>You haven’t listened to any episodes yet.</p>
       ) : (
-        <ul style={{ listStyle: "none", padding: 0 }}>
+        <ul className="history-list">
           {history.map((episode) => {
             const progress = progressMap[episode._key] || 0;
+            const isEpisodePlaying = currentEpisodeKey === episode._key && isPlaying;
 
             return (
-              <li
-                key={episode._key}
-                style={{
-                  borderBottom: "1px solid #ccc",
-                  padding: "1rem 0",
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  flexWrap: "wrap",
-                }}
-              > 
-                <div style={{ flex: "1 1 10%", display: "flex", alignItems: "center" }}>
-                  <img src={episode.seasonImage} alt={`Cover for ${episode.title}`} style={{ width: "100px", borderRadius: "4px" }} />
+              <li key={episode._key} className="history-item">
+                <div className="history-image-container">
+                  <img
+                    src={episode.seasonImage}
+                    alt={`Cover for ${episode.title}`}
+                    className="history-image"
+                  />
                 </div>
-                <div style={{ flex: "1 1 70%" }}>
+                <div className="history-content">
                   <strong>{episode.title}</strong>
                   <br />
                   <small>
                     Season {episode.seasonNumber}, Episode {episode.episode}
                   </small>
 
-                  <div
-                    style={{
-                      marginTop: "0.5rem",
-                      backgroundColor: "#eee",
-                      height: "6px",
-                      borderRadius: "4px",
-                      overflow: "hidden",
-                    }}
-                  >
+                  <div className="history-progress-bar">
                     <div
+                      className="history-progress-fill"
                       style={{
                         width: `${progress}%`,
                         backgroundColor: progress === 100 ? "green" : "#007bff",
-                        height: "100%",
-                        transition: "width 0.2s",
                       }}
                     ></div>
                   </div>
@@ -76,9 +70,9 @@ function HistoryPage() {
                 <div>
                   <button
                     onClick={() => handlePlay(episode)}
-                    style={{ marginLeft: "1rem" }}
+                    className="history-play-button"
                   >
-                    ▶ Play
+                    {isEpisodePlaying ? "⏸ Pause" : "▶ Play"}
                   </button>
                 </div>
               </li>
@@ -88,18 +82,7 @@ function HistoryPage() {
       )}
 
       {history.length > 0 && (
-        <button
-          onClick={handleReset}
-          style={{
-            marginTop: "2rem",
-            padding: "0.75rem 1.5rem",
-            backgroundColor: "#ff4d4f",
-            color: "white",
-            border: "none",
-            borderRadius: "4px",
-            cursor: "pointer",
-          }}
-        >
+        <button onClick={handleReset} className="history-reset-button">
           Reset Listening History
         </button>
       )}
