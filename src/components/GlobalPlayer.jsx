@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { usePlayback } from "../context/PlaybackContext";
 import { useNavigate, useLocation } from "react-router-dom";
 import { FaRegWindowClose } from "react-icons/fa";
+import ConfirmModal from "./ConfirmModal";
 
 export default function GlobalPlayer() {
   const { currentEpisode, setCurrentEpisode, audioRef } = usePlayback();
@@ -9,6 +10,7 @@ export default function GlobalPlayer() {
   const [progress, setProgress] = useState(0);
   const [volume, setVolume] = useState(1);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -49,19 +51,29 @@ export default function GlobalPlayer() {
     if (audioRef.current) audioRef.current.volume = value;
   };
 
-  const closePlayer = () => {
-  const audio = audioRef.current;
-  if (audio) {
-    audio.pause();
-    audio.currentTime = 0;
-  }
-  setIsPlaying(false);
-  setIsExpanded(false);
+  const handleCloseClick = () => {
+    setShowConfirm(true); // show the confirmation modal
+  };
 
-  if (typeof setCurrentEpisode === "function") {
-    setCurrentEpisode(null);
-  }
-};
+  const confirmClosePlayer = () => {
+    setShowConfirm(false); // hide modal
+
+    const audio = audioRef.current;
+    if (audio) {
+      audio.pause();
+      audio.currentTime = 0;
+    }
+    setIsPlaying(false);
+    setIsExpanded(false);
+
+    if (typeof setCurrentEpisode === "function") {
+      setCurrentEpisode(null);
+    }
+  };
+
+  const cancelClose = () => {
+    setShowConfirm(false);
+  };
 
   const seek = (e) => {
     const audio = audioRef.current;
@@ -136,11 +148,22 @@ export default function GlobalPlayer() {
             Open Full Player 🎧
           </button>
           
-          <button onClick={closePlayer} className="global-player-close-btn" title="Close Player" {
-            ...(window.confirm("Are you sure you want to close and stop the player?") ? null : { "aria-label": "Close Player" }
-            )}>
+          <button
+            onClick={handleCloseClick}
+            className="global-player-close-btn"
+            title="Close Player"
+            aria-label="Close Player"
+          >
             <FaRegWindowClose />
           </button>
+
+          {showConfirm && (
+            <ConfirmModal
+              message="Are you sure you want to stop and close the player?"
+              onConfirm={confirmClosePlayer}
+              onCancel={cancelClose}
+            />
+          )}
           </div>
         </div>
       )}
