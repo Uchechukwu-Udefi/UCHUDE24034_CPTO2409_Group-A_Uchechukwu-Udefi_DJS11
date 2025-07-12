@@ -25,9 +25,23 @@ body {
 }
 
 .site-wrapper {
-  min-height: 100vh;
+  min-height: 100dvh; /* Use 100dvh for dynamic viewport height */
   display: flex;
   flex-direction: column;
+  position: relative;
+}
+
+
+@media (max-width: 768px) {
+  .site-wrapper {
+    padding-bottom: 300px; /* Adjust for medium screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .site-wrapper {
+    padding-bottom: 50px; /* Adjust for small screens */
+  }
 }
 
 header {
@@ -120,22 +134,37 @@ header .login-link {
 }
 
 main {
-  margin-bottom: 84px;
   flex: 1;
-  display: flex;
-  flex-direction: column;
+  padding-bottom: 180px;
+}
+
+@media (max-width: 1024px) {
+  main {
+    padding-bottom: 180px;
+  }
+}
+
+
+@media (max-width: 768px) {
+  main {
+    padding-bottom: 180px;
+  }
 }
 
 footer {
+  position: fixed;
   background-color: #161616;
   color: #aaaaaa;
   height: 74px;
+  width: 100%;
   display: flex;
   flex-shrink: 0;
   justify-content: center;
   align-items: center;
   margin-top: auto;
+  bottom: 0px;
   font-weight: 500;
+  z-index: 900;
 }
 
 .link-button {
@@ -214,6 +243,17 @@ footer {
   align-items: center;
 }
 
+@media (min-width: 481px) and (max-width: 1023px) {
+  .home-container {
+    padding: 30px 15px;
+  }
+
+  .show-list-item {
+    width: 180px;
+    padding: 12px;
+  }
+}
+
 .home-intro {
   background: url("../assets/images/bg-image.jpg") no-repeat center center;
   -webkit-background-size: cover;
@@ -274,7 +314,8 @@ footer {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   overflow-x: auto;
-  overflow-y: auto;
+  overflow-y: visible;
+  padding-bottom: 20px;
   gap: 1rem;
 }
 
@@ -711,7 +752,7 @@ footer {
 
 .global-player {
   position: fixed;
-  bottom: 0;
+  bottom: 74px;
   width: 100%;
   background: #fff;
   border-top: 1px solid #ccc;
@@ -720,6 +761,14 @@ footer {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.global-player.expanded {
+  bottom: 74px;
+  height: auto;
+  max-height: 300px;
+  overflow-y: auto;
 }
 
 .global-player__header {
@@ -782,7 +831,8 @@ footer {
 @media (max-width: 768px) {
   .global-player {
     font-size: 0.9rem;
-    padding: 0.5rem;
+    padding: 10px;
+    bottom: 74px;
   }
 
   .global-player-util-buttons {
@@ -799,6 +849,10 @@ footer {
 }
 
 @media (max-width: 480px) {
+  .global-player {
+    padding: 10px;
+    bottom: 74px;
+  }
   .global-player__info {
     display: none;
   }
