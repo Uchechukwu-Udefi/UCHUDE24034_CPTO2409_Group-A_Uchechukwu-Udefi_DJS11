@@ -48,7 +48,7 @@ export default function Header() {
             <button className="hamburger" onClick={() => setMenuOpen(!menuOpen)}>
                 {menuOpen ? <FaRegWindowClose /> : <GiHamburgerMenu />}
             </button>
-            <nav ref={menuRef} className={menuOpen ? 'open' : ''}>
+            <nav ref={menuRef} className={`header-nav ${menuOpen ? 'open' : ''}`}>
                 <NavLink to="/shows" end style={({ isActive }) => isActive ? activeStyles : null} onClick={handleLinkClick}>🌐 Explore</NavLink>
                 <NavLink to="/history" end style={({ isActive }) => isActive ? activeStyles : null} onClick={handleLinkClick}>🧭 History</NavLink>
                 <NavLink to="/favourites" style={({ isActive }) => isActive ? activeStyles : null} onClick={handleLinkClick}>❤️ Favourites</NavLink>
