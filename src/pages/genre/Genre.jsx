@@ -56,7 +56,7 @@ export default function Genre() {
             {shows.length > 0 ? (
             <div className="show-list-container">
             {shows.map(show => (
-                <div key={show.id} className="show-genre-list-item">
+                <div key={show.id} className="show-list-item">
                     <img src={show.image} alt={show.title} />
                 <strong>{show.title}</strong> 
                 <strong>{show.seasons.length} Seasons</strong>
