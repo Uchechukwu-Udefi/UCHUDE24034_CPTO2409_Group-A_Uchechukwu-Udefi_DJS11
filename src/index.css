@@ -31,19 +31,6 @@ body {
   position: relative;
 }
 
-
-@media (max-width: 768px) {
-  .site-wrapper {
-    padding-bottom: 300px; /* Adjust for medium screens */
-  }
-}
-
-@media (max-width: 480px) {
-  .site-wrapper {
-    padding-bottom: 50px; /* Adjust for small screens */
-  }
-}
-
 header {
   height: 110px;
   background-color: #161616;
@@ -200,23 +187,22 @@ main {
   transform: translateY(-2px);
 }
 
-/* Reset some styles */
+/*** FOOTER ***/
 footer {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #161616; /* slate-900 */
-    color: #f1f5f9; /* slate-100 */
-    padding: 1rem 2rem;
-    font-size: 0.9rem;
-    position: relative;
-    margin-top: auto;
-    flex-shrink: 0;
-    z-index: 1000;
-    height: 74px;
-    gap: 1rem;
-
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #161616;
+  color: #f1f5f9;
+  padding: 1rem 2rem;
+  font-size: 0.9rem;
+  height: 74px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
 }
 
 /* Navigation bar styling */
@@ -230,7 +216,7 @@ footer {
 /* Copyright */
 .footer-copyright {
     font-size: 0.8rem;
-    color: #94a3b8; /* slate-400 */
+    color: #94a3b8; 
 }
 
 /* NavLink icons */
@@ -242,7 +228,7 @@ footer {
 }
 
 .footer-nav a:hover {
-    color: #2dd4bf; /* teal-400 */
+    color: #2dd4bf;
 }
 
 /* Active NavLink styling (matches inline activeStyles) */
@@ -479,7 +465,7 @@ footer {
 
 .show-list-item a {
   text-decoration: none;
-  color: #ccc;
+  color: white;
   font-weight: 600;
   margin-top: 20px;
   background-color: #634DB8;
