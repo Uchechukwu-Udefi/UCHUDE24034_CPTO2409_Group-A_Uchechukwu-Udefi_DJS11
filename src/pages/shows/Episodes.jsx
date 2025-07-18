@@ -98,11 +98,14 @@ export default function EpisodePlayer() {
     audio.currentTime = (audio.duration * percent) / 100;
   };
 
-  const handleVolumeChange = (e) => {
-    const value = Number(e.target.value);
-    setVolume(value);
-    if (audioRef.current) audioRef.current.volume = value;
-  };
+  /**
+   * Sets volume on mount
+   */
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = volume;
+    }
+  }, [audioRef]);
 
   const goToEpisode = (index) => {
     if (index < 0 || index >= seasonEpisodes.length) return;
@@ -176,7 +179,11 @@ export default function EpisodePlayer() {
             max="1"
             step="0.01"
             value={volume}
-            onChange={handleVolumeChange}
+            onChange={(e) => {
+                const value = Number(e.target.value);
+                setVolume(value);
+                if (audioRef.current) audioRef.current.volume = value;
+              }}
             className="player__volume-slider"
           />
 

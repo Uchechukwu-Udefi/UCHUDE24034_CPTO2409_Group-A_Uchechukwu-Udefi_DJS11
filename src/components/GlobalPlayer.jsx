@@ -121,13 +121,13 @@ export default function GlobalPlayer() {
         />
 
         <div className="global-player__info">
-          <strong>{currentEpisode.showTitle}</strong>
+          <strong>{currentEpisode.showTitle} - Season {currentEpisode.seasonNumber}</strong>
           <br />
-          <small>{currentEpisode.title}</small>
+          <small>Episode {currentEpisode.episode}: {currentEpisode.title}</small>
         </div>
 
         <button onClick={togglePlayback} className="global-player__button">
-          {isPlaying ? "⏸" : "▶"}
+          {isPlaying ? "⏸" : " ▶ "}
         </button>
 
         <button

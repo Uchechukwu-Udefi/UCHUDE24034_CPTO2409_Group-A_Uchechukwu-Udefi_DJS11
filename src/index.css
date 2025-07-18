@@ -189,7 +189,7 @@ footer {
   bottom: 0;
   left: 0;
   right: 0;
-  z-index: 999;
+  z-index: 1000;
 }
 
 /* Navigation bar styling */
@@ -840,12 +840,11 @@ footer {
 
 .global-player__info {
   flex: 1;
-  font-size: 0.9rem;
+  font-size: 1rem;
 }
 
 .global-player__button {
   font-size: 1.2rem;
-  background: none;
   border: none;
   cursor: pointer;
 }
@@ -864,7 +863,9 @@ footer {
 
 .global-player-util-buttons {
   display: flex;
-  align-items: center;
+  align-items: space-between;
+  justify-content: space-between;
+  width: 100%;
   gap: 0.5rem;
 }
 
@@ -905,9 +906,6 @@ footer {
   .global-player {
     padding: 10px;
     bottom: 74px;
-  }
-  .global-player__info {
-    display: none;
   }
 
   .global-player__header {
