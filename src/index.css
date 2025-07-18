@@ -880,6 +880,20 @@ footer {
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
+.episode-player__volume,
+.global-player__volume {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.volume-icon-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: inherit;
+}
 
 /* Responsive layout */
 @media (max-width: 768px) {

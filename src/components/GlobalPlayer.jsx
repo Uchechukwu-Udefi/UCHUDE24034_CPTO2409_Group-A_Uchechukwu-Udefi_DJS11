@@ -3,18 +3,10 @@ import { usePlayback } from "../context/PlaybackContext";
 import { useNavigate, useLocation } from "react-router-dom";
 import { FaRegWindowClose } from "react-icons/fa";
 import ConfirmModal from "./ConfirmModal";
+import { FaVolumeUp, FaVolumeMute } from "react-icons/fa";
 
 /**
  * GlobalPlayer component displays a mini audio player that syncs with global playback state.
- * - Shows currently playing episode
- * - Controls playback (play/pause)
- * - Syncs progress, volume
- * - Links to full episode page
- * - Allows closing/resetting current episode
- *
- * Hidden on the full episode player page.
- *
- * @component
  */
 export default function GlobalPlayer() {
   const {
@@ -25,6 +17,8 @@ export default function GlobalPlayer() {
     togglePlayback,
     volume,
     setVolume,
+    toggleMute,
+    setLastVolume
   } = usePlayback();
 
   const [progress, setProgress] = useState(0);
@@ -36,61 +30,33 @@ export default function GlobalPlayer() {
 
   const isEpisodePage = /\/shows\/[^/]+\/season\/[^/]+\/episode\/[^/]+/.test(location.pathname);
 
-  /**
-   * Syncs player UI with the global audio element
-   */
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
 
     const updateProgress = () => setProgress(audio.currentTime);
-    const handlePlay = () => {}; // No local isPlaying anymore
-    const handlePause = () => {};
-
     audio.addEventListener("timeupdate", updateProgress);
-    audio.addEventListener("play", handlePlay);
-    audio.addEventListener("pause", handlePause);
 
     return () => {
       audio.removeEventListener("timeupdate", updateProgress);
-      audio.removeEventListener("play", handlePlay);
-      audio.removeEventListener("pause", handlePause);
     };
   }, [audioRef]);
 
-  /**
-   * Sets volume on mount
-   */
-  useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.volume = volume;
-    }
-  }, [audioRef]);
-
-  // Hide player on episode page
+  // Hide GlobalPlayer on full episode pages or if nothing is playing
   if (isEpisodePage || !currentEpisode) return null;
 
-  /**
-   * Handles user closing the player
-   */
   const confirmClosePlayer = () => {
     setShowConfirm(false);
-
     const audio = audioRef.current;
     if (audio) {
       audio.pause();
       audio.currentTime = 0;
     }
-
     if (typeof setCurrentEpisode === "function") {
       setCurrentEpisode(null);
     }
   };
 
-  /**
-   * Seeks to a new point in the track
-   * @param {Event} e
-   */
   const seek = (e) => {
     const audio = audioRef.current;
     const percent = e.target.value;
@@ -99,11 +65,6 @@ export default function GlobalPlayer() {
     }
   };
 
-  /**
-   * Formats seconds into MM:SS
-   * @param {number} s
-   * @returns {string}
-   */
   const formattedTime = (s) =>
     isNaN(s) ? "--:--" : new Date(s * 1000).toISOString().substr(14, 5);
 
@@ -153,7 +114,13 @@ export default function GlobalPlayer() {
           </small>
 
           <div className="global-player__volume">
-            Volume:
+            <button
+              onClick={() => toggleMute()}
+              className="volume-icon-button"
+              aria-label="Toggle mute"
+            >
+              {volume > 0 ? <FaVolumeUp /> : <FaVolumeMute />}
+            </button>
             <input
               type="range"
               min="0"
@@ -163,7 +130,7 @@ export default function GlobalPlayer() {
               onChange={(e) => {
                 const value = Number(e.target.value);
                 setVolume(value);
-                if (audioRef.current) audioRef.current.volume = value;
+                if (value > 0) setLastVolume(value);
               }}
             />
           </div>

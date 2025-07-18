@@ -5,13 +5,14 @@ import { usePlayback } from "../../context/PlaybackContext";
 import BackButton from "../../components/BackButton";
 import { FaStar, FaRegStar } from "react-icons/fa";
 import Loading from "../../components/LoadingSpinner";
+import { FaVolumeUp, FaVolumeMute } from "react-icons/fa";
+
 
 export default function EpisodePlayer() {
   const { id, seasonNumber, episodeId } = useParams();
   const navigate = useNavigate();
 
   const [episode, setEpisode] = useState(null);
-  const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
 
   const {
@@ -21,12 +22,16 @@ export default function EpisodePlayer() {
     seasonEpisodes,
     favorites,
     toggleFavorite,
+    isPlaying,
+    togglePlayback,
     volume,
     setVolume,
+    currentEpisode,
+    toggleMute,
+    setLastVolume
   } = usePlayback();
 
   const episodeIndex = Number(episodeId) - 1;
-
   const isFavorite = episode && favorites.some(fav => fav._key === episode._key);
 
   useEffect(() => {
@@ -53,7 +58,11 @@ export default function EpisodePlayer() {
         };
 
         setEpisode(enriched);
-        playShow(enriched);
+
+        // If not the current episode, update global state
+        if (!currentEpisode || currentEpisode._key !== enriched._key) {
+          playShow(enriched);
+        }
       } catch (err) {
         console.error("Episode load failed", err);
       }
@@ -62,51 +71,38 @@ export default function EpisodePlayer() {
     fetchEpisode();
   }, [id, seasonNumber, episodeId]);
 
-  // Sync UI with audio element
+  // Track progress
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
 
     const updateProgress = () => setProgress(audio.currentTime);
-    const handlePlay = () => setIsPlaying(true);
-    const handlePause = () => setIsPlaying(false);
-
     audio.addEventListener("timeupdate", updateProgress);
-    audio.addEventListener("play", handlePlay);
-    audio.addEventListener("pause", handlePause);
 
     return () => {
       audio.removeEventListener("timeupdate", updateProgress);
-      audio.removeEventListener("play", handlePlay);
-      audio.removeEventListener("pause", handlePause);
     };
   }, [audioRef]);
 
-  const togglePlayback = () => {
+  // Only play if isPlaying is true — don't pause if coming from GlobalPlayer
+  useEffect(() => {
     const audio = audioRef.current;
-    if (!audio) return;
+    if (!audio || !episode) return;
 
-    if (audio.paused) {
-      audio.play().catch((err) => console.warn("Play failed:", err));
-    } else {
-      audio.pause();
+    if (isPlaying && audio.paused) {
+      audio.play().catch((e) => {
+        console.warn("Playback error:", e);
+      });
     }
-  };
+  }, [isPlaying, episode, audioRef]);
 
   const seek = (e) => {
     const audio = audioRef.current;
     const percent = e.target.value;
-    audio.currentTime = (audio.duration * percent) / 100;
-  };
-
-  /**
-   * Sets volume on mount
-   */
-  useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.volume = volume;
+    if (audio?.duration) {
+      audio.currentTime = (audio.duration * percent) / 100;
     }
-  }, [audioRef]);
+  };
 
   const goToEpisode = (index) => {
     if (index < 0 || index >= seasonEpisodes.length) return;
@@ -124,15 +120,15 @@ export default function EpisodePlayer() {
   return (
     <div className="episode-player">
       <img src={episode.seasonImage} alt={`Cover for ${episode.showTitle}`} className="episode-player__image" />
-      
+
       <h1 className="episode-player__title">
         {episode.showTitle} - Season {episode.seasonNumber}
       </h1>
-      
+
       <h2 className="episode-player__subtitle">
         Episode {episodeId}: {episode.title}
       </h2>
-      
+
       <p className="episode-player__description">{episode.description}</p>
 
       <div className="episode-player__controls">
@@ -172,7 +168,13 @@ export default function EpisodePlayer() {
         </div>
 
         <div className="episode-player__volume">
-          <label htmlFor="volume">Volume:</label>
+          <button
+            onClick={() => toggleMute()}
+            className="volume-icon-button"
+            aria-label="Toggle mute"
+          >
+            {volume > 0 ? <FaVolumeUp /> : <FaVolumeMute />}
+          </button>
           <input
             id="volume"
             type="range"
@@ -181,10 +183,10 @@ export default function EpisodePlayer() {
             step="0.01"
             value={volume}
             onChange={(e) => {
-                const value = Number(e.target.value);
-                setVolume(value);
-                if (audioRef.current) audioRef.current.volume = value;
-              }}
+              const value = Number(e.target.value);
+              setVolume(value);
+              if (value > 0) setLastVolume(value);
+            }}
             className="player__volume-slider"
           />
 
