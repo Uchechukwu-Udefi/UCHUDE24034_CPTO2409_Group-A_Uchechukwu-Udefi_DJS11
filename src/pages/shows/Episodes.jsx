@@ -13,7 +13,6 @@ export default function EpisodePlayer() {
   const [episode, setEpisode] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
-  const [volume, setVolume] = useState(1);
 
   const {
     playShow,
@@ -22,6 +21,8 @@ export default function EpisodePlayer() {
     seasonEpisodes,
     favorites,
     toggleFavorite,
+    volume,
+    setVolume,
   } = usePlayback();
 
   const episodeIndex = Number(episodeId) - 1;

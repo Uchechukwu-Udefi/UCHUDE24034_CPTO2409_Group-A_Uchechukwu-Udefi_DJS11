@@ -23,10 +23,11 @@ export default function GlobalPlayer() {
     audioRef,
     isPlaying,
     togglePlayback,
+    volume,
+    setVolume,
   } = usePlayback();
 
   const [progress, setProgress] = useState(0);
-  const [volume, setVolume] = useState(1);
   const [isExpanded, setIsExpanded] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
 

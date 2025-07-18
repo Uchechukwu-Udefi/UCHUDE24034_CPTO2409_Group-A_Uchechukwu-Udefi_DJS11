@@ -35,6 +35,7 @@ export function PlaybackProvider({ children }) {
   const [completedEpisodes, setCompletedEpisodes] = useState([]);
   const [progressMap, setProgressMap] = useState({});
   const [isPlaying, setIsPlaying] = useState(false);
+  const [volume, setVolume] = useState(1); // Default volume level
 
   const audioRef = useRef(null);
   const location = useLocation();
@@ -234,6 +235,31 @@ export function PlaybackProvider({ children }) {
     localStorage.removeItem("episodeProgress");
   };
 
+  /**
+   * Sets the volume of the audio player.
+   */
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = volume;
+    }
+  }, [volume]);
+
+  useEffect(() => {
+    const savedVolume = localStorage.getItem("playerVolume");
+    if (savedVolume !== null) {
+      setVolume(Number(savedVolume));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("playerVolume", volume);
+  }, [volume]);
+
+  /**
+   * Returns the playback context value.
+   *
+   * @returns {Object} Playback context value
+   */
   return (
     <PlaybackContext.Provider
       value={{
@@ -253,6 +279,8 @@ export function PlaybackProvider({ children }) {
         toggleFavorite,
         removeFavorite,
         completedEpisodes,
+        volume,
+        setVolume,
       }}
     >
       {children}
