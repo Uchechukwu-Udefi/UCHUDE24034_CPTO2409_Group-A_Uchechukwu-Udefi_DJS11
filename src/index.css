@@ -1027,7 +1027,9 @@ footer {
 
 .favorite-episode-item {
   display: flex;
-  align-items: center;
+  flex-direction: row;
+  align-items: space-between;
+  justify-content: space-between;
   margin-bottom: 0.75rem;
   background: #f9f9f9;
   color: #000;
@@ -1045,9 +1047,40 @@ footer {
   margin-right: 12px;
 }
 
+@media screen  and (max-width: 480px) {
+    .favorite-episode-item {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0.75rem;
+    background: #f9f9f9;
+    color: #000;
+    padding: 0.5rem;
+    border-radius: 6px;
+    transition: background 0.2s ease-in-out;
+    gap: 12px;
+  }
+}
+
 .favorite-episode-info {
   flex: 1;
   font-size: 0.95rem;
+}
+
+.favorite-episode-details,
+.favorite-episode-actions {
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+  align-items: space-between;
+  justify-content: space-between;
+}
+
+.favorite-episode-actions p {
+  margin-left: auto;
+  font-size: 0.9rem;
+  background-color: #e2e8f0;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
 }
 
 .favorite-play-button {
@@ -1131,6 +1164,7 @@ footer {
 
 .history-content {
   flex: 1 1 70%;
+  padding: 0 1rem;
 }
 
 .history-progress-bar {
@@ -1148,6 +1182,19 @@ footer {
 
 .history-play-button {
   margin-left: 1rem;
+  background-color: #f87a20;
+  color: white;
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.history-play-button:hover {
+  background-color: #2DD4BF;
+  transition: background-color 0.2s ease-in-out;
 }
 
 .history-reset-button {

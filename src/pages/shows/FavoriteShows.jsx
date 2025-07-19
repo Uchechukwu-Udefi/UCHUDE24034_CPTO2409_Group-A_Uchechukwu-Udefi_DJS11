@@ -18,16 +18,20 @@ export default function Favorites() {
 
   // Sorting logic
   const sortedFavorites = [...favorites].sort((a, b) => {
+    const dateA = new Date(a.addedAt || 0);
+    const dateB = new Date(b.addedAt || 0);
+
     switch (sortOption) {
+      // Sort by episode title
       case "title-asc":
         return a.title.localeCompare(b.title);
       case "title-desc":
         return b.title.localeCompare(a.title);
       case "oldest":
-        return new Date(a.addedAt) - new Date(b.addedAt);
+        return dateA - dateB; // Ascending
       case "recent":
       default:
-        return new Date(b.addedAt) - new Date(a.addedAt);
+        return dateB - dateA; // Descending
     }
   });
 
@@ -76,24 +80,30 @@ export default function Favorites() {
 
               return (
                 <li key={ep._key} className="favorite-episode-item">
-                  <img src={ep.seasonImage} alt={ep.title} className="favorite-episode-image" />
-                  <div className="favorite-episode-info">
-                    <strong>{ep.title}</strong>
-                    <br />
-                    <small>Episode {ep.episode}</small>
+                  <div className="favorite-episode-details">
+                     <img src={ep.seasonImage} alt={ep.title} className="favorite-episode-image" />
+                    <div className="favorite-episode-info">
+                      <strong>{ep.title}</strong>
+                      <br />
+                      <small>Episode {ep.episode}</small>
+                    </div>
                   </div>
-                  <button
-                    onClick={() => handlePlay(ep)}
-                    className="favorite-play-button"
-                  >
-                    {isEpisodePlaying ? "⏸ Pause" : "▶ Play"}
-                  </button>
-                  <button
-                    onClick={() => removeFavorite(ep._key)}
-                    className="favorite-remove-button"
-                  >
-                    ✖ Remove
-                  </button>
+                 
+                 <div className="favorite-episode-actions">
+                    <p><strong>Added on:</strong> {new Date(ep.addedAt || 0).toLocaleDateString()}</p>
+                    <button
+                      onClick={() => handlePlay(ep)}
+                      className="favorite-play-button"
+                    >
+                      {isEpisodePlaying ? "⏸ Pause" : "▶ Play"}
+                    </button>
+                    <button
+                      onClick={() => removeFavorite(ep._key)}
+                      className="favorite-remove-button"
+                    >
+                      ✖ Remove
+                    </button>
+                 </div>
                 </li>
               );
             })}

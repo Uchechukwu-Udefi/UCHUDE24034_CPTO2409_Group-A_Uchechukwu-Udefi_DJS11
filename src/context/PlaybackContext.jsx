@@ -189,7 +189,11 @@ export function PlaybackProvider({ children }) {
     const key = episode._key || `${episode.showId || episode.id}-${episode.seasonNumber}-${episode.episode}`;
     setFavorites((prev) => {
       const exists = prev.find((fav) => fav._key === key);
-      return exists ? prev.filter((f) => f._key !== key) : [{ ...episode, _key: key }, ...prev];
+      if (exists) {
+        return prev.filter((f) => f._key !== key);
+      } else {
+        return [{ ...episode, _key: key, addedAt: new Date().toISOString() }, ...prev];
+      }
     });
   };
 
