@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { FaHome } from "react-icons/fa"
-import { FaSearch } from "react-icons/fa";
+import BackToTopButton from "./BackTotopButton";
 
 export default function Footer() {
 
@@ -14,7 +14,7 @@ export default function Footer() {
         <footer>
             <nav className="footer-nav">
                 <NavLink to="/" style={({ isActive }) => isActive ? activeStyles : null}> <FaHome /> </NavLink>
-                <NavLink to="/search" style={({ isActive }) => isActive ? activeStyles : null}> <FaSearch /> </NavLink>
+                <BackToTopButton />
             </nav>
 
             <div className="footer-copyright">
