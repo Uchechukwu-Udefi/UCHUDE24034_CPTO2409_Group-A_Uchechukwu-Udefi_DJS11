@@ -4,8 +4,8 @@ A full-featured React web application for browsing, viewing, and managing podcas
 
 
 ## Video Demo
-[[Watch the video]](https://www.loom.com/share/96c61fa784364f019a48da826664785b)
-[[Watch the video]](https://www.loom.com/share/43cc071606284f88b03db36066a56c4e)
+[[[Watch the video](https://www.loom.com/share/7617d19fb72e44ee8875161e7afc4683?sid=9e293fb1-4077-450c-aa38-8e89223c8e1a)]](https://www.loom.com/share/7617d19fb72e44ee8875161e7afc4683?sid=9e293fb1-4077-450c-aa38-8e89223c8e1a)
+[[Watch the video]](https://www.loom.com/share/823bf52823974b43aec2bc22f79fbd37?sid=aba35115-fe5d-4f23-be76-ce9ca0b2b28f)
 [[Watch the video]](https://www.loom.com/share/b35894707c6342e3bc7b46f37d67e82b)
 [[Watch the video]](https://www.loom.com/share/7842b5ff9d7c4d84b2e9b116022f8ea0)
 [[Watch the video]](https://www.loom.com/share/33f99d7c4c06495983430cc3d8211886)
@@ -64,6 +64,8 @@ Uchechukwu-Udefi-Podcast-App/
 │
 ├── src/
 │   ├── components/
+│   │   ├── BackButton.jsx
+│   │   ├── BackToTopButton.jsx
 │   │   ├── ConfirmModal.jsx
 │   │   ├── Footer.jsx
 │   │   ├── GlobalPlayer.jsx
