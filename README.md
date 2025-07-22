@@ -5,10 +5,13 @@ A full-featured React web application for browsing, viewing, and managing podcas
 
 ## Video Demo
 [[[Watch App Review](https://www.loom.com/share/7617d19fb72e44ee8875161e7afc4683?sid=9e293fb1-4077-450c-aa38-8e89223c8e1a)]](https://www.loom.com/share/7617d19fb72e44ee8875161e7afc4683?sid=9e293fb1-4077-450c-aa38-8e89223c8e1a)
+### Code Reviews
 [[Watch code review 1]](https://www.loom.com/share/823bf52823974b43aec2bc22f79fbd37?sid=aba35115-fe5d-4f23-be76-ce9ca0b2b28f)
-[[Watch code review 2]](https://www.loom.com/share/b35894707c6342e3bc7b46f37d67e82b)
-[[Watch code review 3]](https://www.loom.com/share/7842b5ff9d7c4d84b2e9b116022f8ea0)
-[[Watch code review 4]](https://www.loom.com/share/33f99d7c4c06495983430cc3d8211886)
+[[Watch code review 2]](https://www.loom.com/share/5e5ddcd9c1744a84880a514ce40b79f8?sid=781fc283-21ed-407b-9fb7-31010a809fdc)
+[[Watch code review 3]](https://www.loom.com/share/70f2aac18d034480bf0d77dff0c46b4b?sid=a249c030-707a-4882-80e9-fc0bb16fcf0a)
+[[Watch code review 4]](https://www.loom.com/share/652c95e5b6cd47b79248b45da19dbc7a?sid=eefbbeb1-1338-412d-88b0-6fd6d8ec1467)
+[[Watch code review 5]](https://www.loom.com/share/ef69decb32bb43b6b86ee772dc7e5838?sid=cd93f086-fc97-4648-8313-a2c1acf7ceee)
+[[Watch code review 6]](https://www.loom.com/share/82ee2a847c4142c9b525fa4f6c255650?sid=3b48c5d0-8eec-44a2-b160-4f6a4bedfe5f)
 
 
 ## Live Demo
