@@ -1,10 +1,11 @@
 # 🎵 U-TUNE PODCAST APP | PORTFOLIO PIECE 💿
 
-A full-featured React web application for browsing, viewing, and managing podcast shows. Users can search, explore by genre, view detailed season and episode info, manage favorite shows, view watch history, and enjoy in-app audio playback — all within a seamless experience using modern React features and routing.
+A full-featured React web application for browsing, viewing, and managing podcast shows. Users can search shows, explore by genre, view detailed season and episode info, manage favorite shows, view and manage listening history, and enjoy in-app audio playback — all within a seamless experience using modern React features and routing.
 
 
-## Video Demo
-[[[Watch App Review](https://www.loom.com/share/7617d19fb72e44ee8875161e7afc4683?sid=9e293fb1-4077-450c-aa38-8e89223c8e1a)]](https://www.loom.com/share/7617d19fb72e44ee8875161e7afc4683?sid=9e293fb1-4077-450c-aa38-8e89223c8e1a)
+## App Review
+### Video Demo
+(https://www.loom.com/share/7617d19fb72e44ee8875161e7afc4683?sid=9e293fb1-4077-450c-aa38-8e89223c8e1a)
 ### Code Reviews
 [[Watch code review 1]](https://www.loom.com/share/823bf52823974b43aec2bc22f79fbd37?sid=aba35115-fe5d-4f23-be76-ce9ca0b2b28f)
 [[Watch code review 2]](https://www.loom.com/share/5e5ddcd9c1744a84880a514ce40b79f8?sid=781fc283-21ed-407b-9fb7-31010a809fdc)
